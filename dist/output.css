@@ -1,0 +1,328 @@
+/*!***************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss ***!
+  \***************************************************************************************************************/
+@import url(https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap);
+/*!*******************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss (1) ***!
+  \*******************************************************************************************************************/
+@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap);
+/*!*******************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss (2) ***!
+  \*******************************************************************************************************************/
+@import url(https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap);
+/*!*******************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss (3) ***!
+  \*******************************************************************************************************************/
+@import url(https://fonts.googleapis.com/css2?family=Encode+Sans+Condensed:wght@300;400;500;600&display=swap);
+/*!*******************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss (4) ***!
+  \*******************************************************************************************************************/
+@import url(https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400&display=swap);
+/*!*******************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss (5) ***!
+  \*******************************************************************************************************************/
+.page-container {
+  max-width: 1550px;
+  margin: 0 auto;
+}
+
+.header {
+  color: #d9d9d9;
+  position: relative;
+  z-index: 999999;
+}
+.header__nav-wrapper {
+  position: relative;
+}
+.header__hamburger-menu {
+  height: 70px;
+  padding: 15px 30px;
+  background-color: #030206;
+  border-bottom: #a9e2e2 1px solid;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  z-index: 99999;
+}
+.header__menu-icon {
+  height: 30px;
+  width: 35px;
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  position: relative;
+  cursor: pointer;
+}
+.header__menu-icon--open .header__icon-line:nth-child(1) {
+  position: absolute;
+  transform: rotate(45deg);
+}
+.header__menu-icon--open .header__icon-line:nth-child(2) {
+  opacity: 0;
+}
+.header__menu-icon--open .header__icon-line:nth-child(3) {
+  position: absolute;
+  transform: rotate(-45deg);
+}
+.header__icon-line {
+  height: 4px;
+  width: 100%;
+  background-color: #d9d9d9;
+  border-radius: 10px;
+  transition: all 0.5s ease;
+}
+.header__navbar-menu {
+  width: -webkit-fill-available;
+  background-color: rgba(44, 44, 44, 0.9);
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.5s ease, opacity 0.3s ease 0.2s;
+}
+.header__navbar-menu--visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+  padding-top: 71px;
+  transition: transform 0.5s ease, opacity 0.3s ease;
+}
+.header__menu-list {
+  list-style: none;
+  padding: 25px 30px;
+  font-family: "Cinzel";
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.header__menu-list li {
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+.header__menu-list li a {
+  font-size: 18px;
+  color: #d9d9d9;
+  text-decoration: none;
+}
+.header__menu-list li a:hover {
+  font-size: 20px;
+  color: #a9e2e2;
+}
+
+.main-section {
+  padding: 0 30px;
+}
+
+.text-input {
+  height: 145px;
+  width: -webkit-fill-available;
+  padding: 15px 10px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  color: #d9d9d9;
+  background-color: #2c2c2c;
+  font-size: 13px;
+  font-family: "Encode Sans Condensed";
+  vertical-align: top;
+  text-align: left;
+}
+.text-input:focus {
+  border-color: #a9e2e2;
+  outline: none;
+}
+.text-input::placeholder {
+  color: #888;
+  opacity: 0.7;
+}
+
+.slider {
+  font-family: "Roboto Condensed";
+  display: grid;
+  gap: 5px;
+}
+.slider__container {
+  width: 100%;
+  padding: 15px 0;
+  display: flex;
+  align-items: center;
+}
+.slider__label-element {
+  font-size: 13px;
+  margin-left: 10px;
+  color: #d9d9d9;
+}
+.slider__input {
+  width: 100%;
+  height: 16px;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  outline: none;
+  background-color: #2c2c2c;
+}
+.slider__input::-webkit-slider-thumb {
+  width: 15px;
+  height: 54px;
+  -webkit-appearance: none;
+  appearance: none;
+  border: 5px solid #030206;
+  border-radius: 8px;
+  background-color: #d9d9d9;
+  cursor: pointer;
+}
+.slider__input::-webkit-slider-thumb:active {
+  background-color: #a9e2e2;
+}
+.slider__input::-moz-range-thumb {
+  width: 15px;
+  height: 54px;
+  border: 5px solid #030206;
+  border-radius: 8px;
+  background-color: #d9d9d9;
+  cursor: pointer;
+}
+.slider__input::-moz-range-thumb:active {
+  background-color: #a9e2e2;
+}
+
+.button-group-container {
+  padding: 0.25rem 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.4375rem;
+  font-family: "Roboto";
+}
+
+.toggle-button {
+  width: 100%;
+  display: flex;
+}
+.toggle-button__button {
+  height: 2.5rem;
+  font-size: 0.875rem;
+  padding: 0.625rem 0.75rem;
+  flex: 1;
+  color: #d9d9d9;
+  background-color: transparent;
+  border: 0.0625rem solid #79747e;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background-color 0.8s ease, color 0.8s ease, border-color 0.8s ease;
+}
+.toggle-button__button:first-child {
+  border-top-left-radius: 6.25rem;
+  border-bottom-left-radius: 6.25rem;
+}
+.toggle-button__button:nth-child(2) {
+  border-top-right-radius: 6.25rem;
+  border-bottom-right-radius: 6.25rem;
+}
+.toggle-button__button--active {
+  color: #030206;
+  background-color: #a9e2e2;
+  border-color: #a9e2e2;
+}
+
+.btn-generate {
+  font-size: 0.875rem;
+  padding: 0.625rem 1.069rem;
+  border: none;
+  border-radius: 6.25rem;
+  color: #d9d9d9;
+  background-color: #2c2c2c;
+}
+.btn-generate:hover {
+  background-color: #393939;
+}
+
+.btn-clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  font-size: 0.875rem;
+  padding: 0.625rem 0.75rem;
+  border: none;
+  border-radius: 6.25rem;
+  color: #d9d9d9;
+  background-color: #2c2c2c;
+}
+.btn-clear svg {
+  margin-top: 0.125rem;
+}
+.btn-clear:hover {
+  background-color: #393939;
+}
+
+.title-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.title-page h1 {
+  color: white;
+  font-family: "Cinzel Decorative";
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 43.2px;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.image-page {
+  width: 100%;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.bg-dark {
+  background-color: #030206;
+}
+
+.first-layout {
+  position: relative;
+  padding: 30px 0;
+}
+.first-layout__column--left, .first-layout__column--right {
+  position: relative;
+  z-index: 1;
+}
+.first-layout__column--left .title-page, .first-layout__column--right .title-page {
+  height: 242px;
+  display: flex;
+  justify-content: end;
+}
+.first-layout__column--right {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.first-layout__image {
+  position: absolute;
+  top: -6px;
+  right: 18px;
+  width: 297px;
+  opacity: 0.5;
+}
+
+/*# sourceMappingURL=output.css.map*/

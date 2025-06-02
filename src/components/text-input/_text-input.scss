@@ -1,0 +1,23 @@
+.text-input {
+    height: 9.0625rem;
+    width: -webkit-fill-available;
+    padding: 0.9375rem 0.625rem;
+    border: 0.0625rem solid $color-background-light;
+    border-radius: 0.5rem;
+    color: $color-text-light;
+    background-color: $color-background-secondary;
+    font-size: 0.8125rem;
+    font-family: 'Encode Sans Condensed';
+    vertical-align: top;
+    text-align: left;
+    
+    &:focus {
+        border-color: $color-accent;
+        outline: none;
+    }
+    
+    &::placeholder {
+        color: #888;
+        opacity: 0.7;
+    }
+}

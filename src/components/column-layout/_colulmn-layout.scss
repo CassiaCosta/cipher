@@ -1,0 +1,15 @@
+.layout {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // gap: 0.36rem;
+
+    &__column {
+        width: 100%;
+    }
+
+    @media (min-width: 1024px) {
+        flex-direction: row;
+    }
+}

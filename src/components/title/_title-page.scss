@@ -1,0 +1,16 @@
+.title-page {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+
+    h1 {
+        color: $color-text-light;
+        font-family: 'Cinzel Decorative';
+        font-size: clamp(5vw, 9vw, 2.5rem);
+        font-weight: 700;
+        line-height: 2.7rem;
+        letter-spacing: -0.02em;
+        text-align: center;
+    }
+}

@@ -1,0 +1,104 @@
+.header {
+    color: $color-text-light;
+    position: relative;
+    z-index: 999999;
+
+    // &__nav-wrapper {
+    //     position: relative;
+    // }
+    
+    &__hamburger-menu {
+        height: 4.375rem;
+        padding: 0.9375rem 1.875rem;
+        background-color: $color-background-primary;
+        border-bottom: $color-accent 0.0625rem solid;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        position: relative;
+        z-index: 99999;
+    }
+
+    &__menu-icon {
+        height: 1.875rem;
+        width: 2.1875rem;
+        background: none;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        position: relative;
+        cursor: pointer;
+        
+        &--open {
+            .header__icon-line {
+                &:nth-child(1) {
+                    position: absolute;
+                    transform: rotate(45deg);
+                }
+                &:nth-child(2) {
+                    opacity: 0;
+                }
+                &:nth-child(3) {
+                    position: absolute;
+                    transform: rotate(-45deg);
+                }
+            }
+        }
+    }
+
+    &__icon-line {
+        height: 0.25rem;
+        width: 100%;
+        background-color: $color-text-light;
+        border-radius: 0.625rem;
+        transition: all .5s ease;
+    }
+
+    &__navbar-menu {
+        width: -webkit-fill-available;
+        background-color: rgba($color-background-secondary, 0.9);
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translateY(-100%);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform .5s ease, opacity .3s ease .2s;
+        
+        &--visible {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+            padding-top: 4.4375rem;
+            transition: transform 0.5s ease, opacity 0.3s ease;
+        }
+    }
+
+    &__menu-list {
+        list-style: none;
+        padding: 1.5625rem 1.875rem;
+        font-family: 'Cinzel';
+        display: flex;
+        flex-direction: column;
+        gap: 0.9375rem;
+        
+        li {
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: end;
+            
+            a {
+                font-size: 1.125rem;
+                color: $color-text-light;
+                text-decoration: none;
+
+                &:hover {
+                    font-size: 1.25rem;
+                    color: $color-accent;
+                }
+            }
+        }
+    }
+}

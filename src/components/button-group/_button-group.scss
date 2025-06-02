@@ -1,0 +1,19 @@
+.button-group-container {
+    padding: 0.25rem 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.4375rem;
+    font-family: 'Roboto';
+
+    @media (max-width: 374px) {
+        flex-wrap: wrap;
+
+        // :first-child {
+        //     flex-basis: 100%;
+        // }
+
+        > *:not(:first-child) {
+            flex: 1 1 calc(50% - 0.5rem);
+        }
+    }
+}

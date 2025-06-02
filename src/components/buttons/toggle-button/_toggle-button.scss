@@ -1,0 +1,37 @@
+.toggle-button {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
+    &__button {
+        height: 2.5rem;
+        width: 100%;
+        font-size: 0.875rem;
+        padding: 0.625rem 0.75rem;
+        // flex: 1;
+        color: $color-text-light;
+        background-color: transparent;
+        border: 0.0625rem solid $color-border-light;
+        cursor: pointer;
+        // overflow: hidden;
+        transition: background-color .8s ease, color .8s ease, border-color .8s ease;
+
+        &:first-child {
+            border-top-left-radius: 6.25rem;
+            border-bottom-left-radius: 6.25rem;
+            border-right: none;
+        }
+
+        &:nth-child(2) {
+            border-top-right-radius: 6.25rem;
+            border-bottom-right-radius: 6.25rem;
+            border-left: none;
+        }
+        
+        &--active {
+            color: $color-text-dark;
+            background-color: $color-accent;
+            border-color: $color-accent;
+        }
+    }
+}
