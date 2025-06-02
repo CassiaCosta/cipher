@@ -34,35 +34,45 @@
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-/*!************************************************!*\
-  !*** ./src/components/text-input/TextInput.ts ***!
-  \************************************************/
+/*!**************************************************************!*\
+  !*** ./src/components/buttons/toggle-button/toggleButton.ts ***!
+  \**************************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   TextInput: () => (/* binding */ TextInput)
+/* harmony export */   ToggleButton: () => (/* binding */ ToggleButton)
 /* harmony export */ });
-class TextInput {
-    constructor({ id = '', className = '', placeholder = '', onChange }) {
-        this.id = id;
-        this.className = className;
-        this.placeholder = placeholder;
-        this.onChange = onChange;
+class ToggleButton {
+    constructor(props) {
+        this.onEncode = props.onEncode;
+        this.onDecode = props.onDecode;
     }
     render() {
-        const inputElement = document.createElement('textarea');
-        inputElement.id = this.id;
-        inputElement.className = `text-input ${this.className}`.trim();
-        inputElement.placeholder = this.placeholder;
-        inputElement.addEventListener('input', (event) => {
-            const target = event.target;
-            if (this.onChange) {
-                this.onChange(target.value);
-            }
+        const container = document.createElement('div');
+        container.className = 'toggle-button';
+        const encodeButton = document.createElement('button');
+        encodeButton.textContent = 'Codificar';
+        encodeButton.className = 'toggle-button__button toggle-button__encode toggle-button__button--active';
+        encodeButton.addEventListener('click', () => {
+            this.setActiveButton(encodeButton, decodeButton);
+            this.onEncode();
         });
-        return inputElement;
+        const decodeButton = document.createElement('button');
+        decodeButton.textContent = 'Decodificar';
+        decodeButton.className = 'toggle-button__button toggle-button__decode';
+        decodeButton.addEventListener('click', () => {
+            this.setActiveButton(decodeButton, encodeButton);
+            this.onDecode();
+        });
+        container.appendChild(encodeButton);
+        container.appendChild(decodeButton);
+        return container;
+    }
+    setActiveButton(activeButton, inactiveButton) {
+        activeButton.classList.add('toggle-button__button--active');
+        inactiveButton.classList.remove('toggle-button__button--active');
     }
 }
 
 /******/ })()
 ;
-//# sourceMappingURL=TextInput.js.map
+//# sourceMappingURL=toggleButton.js.map

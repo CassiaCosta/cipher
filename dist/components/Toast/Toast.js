@@ -2,13 +2,13 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/assets/icons/clear-icon.svg":
-/*!*****************************************!*\
-  !*** ./src/assets/icons/clear-icon.svg ***!
-  \*****************************************/
+/***/ "./src/assets/icons/check-small-icon.svg":
+/*!***********************************************!*\
+  !*** ./src/assets/icons/check-small-icon.svg ***!
+  \***********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "assets/images/clear-icon.svg";
+module.exports = __webpack_require__.p + "assets/images/check-small-icon.svg";
 
 /***/ })
 
@@ -104,63 +104,46 @@ module.exports = __webpack_require__.p + "assets/images/clear-icon.svg";
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-/*!************************************************************!*\
-  !*** ./src/components/buttons/clear-button/ClearButton.ts ***!
-  \************************************************************/
+/*!***************************************!*\
+  !*** ./src/components/toast/Toast.ts ***!
+  \***************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   ClearButton: () => (/* binding */ ClearButton)
+/* harmony export */   Toast: () => (/* binding */ Toast)
 /* harmony export */ });
-/* harmony import */ var _assets_icons_clear_icon_svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../assets/icons/clear-icon.svg */ "./src/assets/icons/clear-icon.svg");
+/* harmony import */ var _assets_icons_check_small_icon_svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../assets/icons/check-small-icon.svg */ "./src/assets/icons/check-small-icon.svg");
 
-class ClearButton {
-    constructor({ elements, className = '', onClearText, onClearShift }) {
-        this.elements = elements;
-        this.className = className;
-        this.onClearText = onClearText;
-        this.onClearShift = onClearShift;
+class Toast {
+    constructor({ message, type = 'success', duration = 1000 }) {
+        this.message = message;
+        this.type = type;
+        this.duration = duration;
     }
     render() {
-        const buttonElement = document.createElement('button');
-        buttonElement.className = `btn-clear ${this.className}`.trim();
-        const labelElement = document.createElement('span');
-        labelElement.textContent = 'Limpar';
-        buttonElement.appendChild(labelElement);
-        const imgClearBtn = document.createElement('img');
-        imgClearBtn.src = _assets_icons_clear_icon_svg__WEBPACK_IMPORTED_MODULE_0__;
-        buttonElement.appendChild(imgClearBtn);
-        buttonElement.addEventListener('click', () => {
-            console.log('Limpar clicado');
-            this.clearElements();
-            this.onClearText();
-            this.onClearShift();
-        });
-        return buttonElement;
-    }
-    clearElements() {
-        this.elements.forEach((element) => {
-            const targetElement = typeof element === 'string' ? document.getElementById(element) : element;
-            if (targetElement) {
-                if (targetElement instanceof HTMLInputElement) {
-                    if (targetElement.type === 'range') {
-                        targetElement.value = targetElement.min || '0';
-                    }
-                    else {
-                        targetElement.value = '';
-                    }
-                    targetElement.dispatchEvent(new Event('input'));
+        const toast = document.createElement('div');
+        toast.className = `toast toast--${this.type}`;
+        const text = document.createElement('span');
+        text.className = 'toast__message';
+        text.textContent = this.message;
+        toast.appendChild(text);
+        if (this.type === 'success') {
+            const icon = document.createElement('img');
+            icon.className = 'toast__icon';
+            icon.src = _assets_icons_check_small_icon_svg__WEBPACK_IMPORTED_MODULE_0__;
+            toast.appendChild(icon);
+        }
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.classList.add('toast--hide');
+            toast.addEventListener('transitionend', () => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
                 }
-                else if (targetElement instanceof HTMLTextAreaElement) {
-                    targetElement.value = '';
-                }
-                else if (targetElement instanceof HTMLSelectElement) {
-                    targetElement.selectedIndex = 0;
-                }
-            }
-        });
+            });
+        }, this.duration);
     }
 }
 
 /******/ })()
 ;
-//# sourceMappingURL=ClearButton.js.map
+//# sourceMappingURL=Toast.js.map

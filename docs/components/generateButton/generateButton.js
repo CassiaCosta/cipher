@@ -34,35 +34,28 @@
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-/*!************************************************!*\
-  !*** ./src/components/text-input/TextInput.ts ***!
-  \************************************************/
+/*!******************************************************************!*\
+  !*** ./src/components/buttons/generate-button/generateButton.ts ***!
+  \******************************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   TextInput: () => (/* binding */ TextInput)
+/* harmony export */   GenerateButton: () => (/* binding */ GenerateButton)
 /* harmony export */ });
-class TextInput {
-    constructor({ id = '', className = '', placeholder = '', onChange }) {
-        this.id = id;
+class GenerateButton {
+    constructor({ label, onClick, className = '' }) {
+        this.label = label;
+        this.onClick = onClick;
         this.className = className;
-        this.placeholder = placeholder;
-        this.onChange = onChange;
     }
     render() {
-        const inputElement = document.createElement('textarea');
-        inputElement.id = this.id;
-        inputElement.className = `text-input ${this.className}`.trim();
-        inputElement.placeholder = this.placeholder;
-        inputElement.addEventListener('input', (event) => {
-            const target = event.target;
-            if (this.onChange) {
-                this.onChange(target.value);
-            }
-        });
-        return inputElement;
+        const buttonElement = document.createElement('button');
+        buttonElement.className = `btn-generate ${this.className}`.trim();
+        buttonElement.textContent = this.label;
+        buttonElement.addEventListener('click', this.onClick);
+        return buttonElement;
     }
 }
 
 /******/ })()
 ;
-//# sourceMappingURL=TextInput.js.map
+//# sourceMappingURL=generateButton.js.map

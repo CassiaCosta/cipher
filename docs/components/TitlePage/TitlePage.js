@@ -34,35 +34,27 @@
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-/*!************************************************!*\
-  !*** ./src/components/text-input/TextInput.ts ***!
-  \************************************************/
+/*!*******************************************!*\
+  !*** ./src/components/title/TitlePage.ts ***!
+  \*******************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   TextInput: () => (/* binding */ TextInput)
+/* harmony export */   TitlePage: () => (/* binding */ TitlePage)
 /* harmony export */ });
-class TextInput {
-    constructor({ id = '', className = '', placeholder = '', onChange }) {
-        this.id = id;
-        this.className = className;
-        this.placeholder = placeholder;
-        this.onChange = onChange;
+class TitlePage {
+    constructor(title) {
+        this.title = title;
     }
     render() {
-        const inputElement = document.createElement('textarea');
-        inputElement.id = this.id;
-        inputElement.className = `text-input ${this.className}`.trim();
-        inputElement.placeholder = this.placeholder;
-        inputElement.addEventListener('input', (event) => {
-            const target = event.target;
-            if (this.onChange) {
-                this.onChange(target.value);
-            }
-        });
-        return inputElement;
+        const titleContainer = document.createElement('div');
+        titleContainer.className = 'title-page';
+        const titlePage = document.createElement('h1');
+        titlePage.textContent = this.title;
+        titleContainer.appendChild(titlePage);
+        return titleContainer;
     }
 }
 
 /******/ })()
 ;
-//# sourceMappingURL=TextInput.js.map
+//# sourceMappingURL=TitlePage.js.map

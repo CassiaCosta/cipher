@@ -34,35 +34,28 @@
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-/*!************************************************!*\
-  !*** ./src/components/text-input/TextInput.ts ***!
-  \************************************************/
+/*!****************************************************!*\
+  !*** ./src/components/main-section/MainSection.ts ***!
+  \****************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   TextInput: () => (/* binding */ TextInput)
+/* harmony export */   MainSection: () => (/* binding */ MainSection)
 /* harmony export */ });
-class TextInput {
-    constructor({ id = '', className = '', placeholder = '', onChange }) {
-        this.id = id;
+class MainSection {
+    constructor({ className = '', children }) {
         this.className = className;
-        this.placeholder = placeholder;
-        this.onChange = onChange;
+        this.children = children;
     }
     render() {
-        const inputElement = document.createElement('textarea');
-        inputElement.id = this.id;
-        inputElement.className = `text-input ${this.className}`.trim();
-        inputElement.placeholder = this.placeholder;
-        inputElement.addEventListener('input', (event) => {
-            const target = event.target;
-            if (this.onChange) {
-                this.onChange(target.value);
-            }
+        const conteinerElement = document.createElement('div');
+        conteinerElement.className = `main-section ${this.className}`;
+        this.children.forEach(child => {
+            conteinerElement.appendChild(child);
         });
-        return inputElement;
+        return conteinerElement;
     }
 }
 
 /******/ })()
 ;
-//# sourceMappingURL=TextInput.js.map
+//# sourceMappingURL=MainSection.js.map

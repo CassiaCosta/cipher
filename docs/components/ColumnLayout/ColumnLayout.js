@@ -34,35 +34,47 @@
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-/*!************************************************!*\
-  !*** ./src/components/text-input/TextInput.ts ***!
-  \************************************************/
+/*!******************************************************!*\
+  !*** ./src/components/column-layout/ColumnLayout.ts ***!
+  \******************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   TextInput: () => (/* binding */ TextInput)
+/* harmony export */   ColumnLayout: () => (/* binding */ ColumnLayout)
 /* harmony export */ });
-class TextInput {
-    constructor({ id = '', className = '', placeholder = '', onChange }) {
-        this.id = id;
+class ColumnLayout {
+    constructor({ leftContent, rightContent, className = '', leftColumnClassName = '', rightColumnClassName = '', children }) {
+        this.leftContent = leftContent;
+        this.rightContent = rightContent;
         this.className = className;
-        this.placeholder = placeholder;
-        this.onChange = onChange;
+        this.children = children;
+        this.leftColumnClassName = leftColumnClassName;
+        this.rightColumnClassName = rightColumnClassName;
+    }
+    createColumn(content) {
+        const column = document.createElement('div');
+        content.forEach(item => {
+            column.appendChild(item);
+        });
+        return column;
     }
     render() {
-        const inputElement = document.createElement('textarea');
-        inputElement.id = this.id;
-        inputElement.className = `text-input ${this.className}`.trim();
-        inputElement.placeholder = this.placeholder;
-        inputElement.addEventListener('input', (event) => {
-            const target = event.target;
-            if (this.onChange) {
-                this.onChange(target.value);
-            }
-        });
-        return inputElement;
+        const columnLayoutContainer = document.createElement('div');
+        columnLayoutContainer.className = `layout ${this.className}`.trim();
+        const leftColumn = this.createColumn(this.leftContent);
+        leftColumn.className = `layout__column layout__column--left ${this.leftColumnClassName}`.trim();
+        const rightColumn = this.createColumn(this.rightContent);
+        rightColumn.className = `layout__column layout__column--right ${this.rightColumnClassName}`.trim();
+        columnLayoutContainer.appendChild(leftColumn);
+        columnLayoutContainer.appendChild(rightColumn);
+        if (this.children) {
+            this.children.forEach(child => {
+                columnLayoutContainer.appendChild(child);
+            });
+        }
+        return columnLayoutContainer;
     }
 }
 
 /******/ })()
 ;
-//# sourceMappingURL=TextInput.js.map
+//# sourceMappingURL=ColumnLayout.js.map

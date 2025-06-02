@@ -34,35 +34,25 @@
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-/*!************************************************!*\
-  !*** ./src/components/text-input/TextInput.ts ***!
-  \************************************************/
+/*!********************************************************!*\
+  !*** ./src/components/page-container/PageContainer.ts ***!
+  \********************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   TextInput: () => (/* binding */ TextInput)
+/* harmony export */   PageContainer: () => (/* binding */ PageContainer)
 /* harmony export */ });
-class TextInput {
-    constructor({ id = '', className = '', placeholder = '', onChange }) {
-        this.id = id;
+class PageContainer {
+    constructor(className = '') {
         this.className = className;
-        this.placeholder = placeholder;
-        this.onChange = onChange;
     }
-    render() {
-        const inputElement = document.createElement('textarea');
-        inputElement.id = this.id;
-        inputElement.className = `text-input ${this.className}`.trim();
-        inputElement.placeholder = this.placeholder;
-        inputElement.addEventListener('input', (event) => {
-            const target = event.target;
-            if (this.onChange) {
-                this.onChange(target.value);
-            }
-        });
-        return inputElement;
+    render(parentElement) {
+        const containerElement = document.createElement('div');
+        containerElement.className = `page-container ${this.className}`.trim();
+        parentElement.appendChild(containerElement);
+        return containerElement;
     }
 }
 
 /******/ })()
 ;
-//# sourceMappingURL=TextInput.js.map
+//# sourceMappingURL=PageContainer.js.map

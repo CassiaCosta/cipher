@@ -34,35 +34,25 @@
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-/*!************************************************!*\
-  !*** ./src/components/text-input/TextInput.ts ***!
-  \************************************************/
+/*!****************************************************!*\
+  !*** ./src/components/button-group/buttonGroup.ts ***!
+  \****************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   TextInput: () => (/* binding */ TextInput)
+/* harmony export */   ButtonGroup: () => (/* binding */ ButtonGroup)
 /* harmony export */ });
-class TextInput {
-    constructor({ id = '', className = '', placeholder = '', onChange }) {
-        this.id = id;
-        this.className = className;
-        this.placeholder = placeholder;
-        this.onChange = onChange;
+class ButtonGroup {
+    constructor(children) {
+        this.children = children;
     }
     render() {
-        const inputElement = document.createElement('textarea');
-        inputElement.id = this.id;
-        inputElement.className = `text-input ${this.className}`.trim();
-        inputElement.placeholder = this.placeholder;
-        inputElement.addEventListener('input', (event) => {
-            const target = event.target;
-            if (this.onChange) {
-                this.onChange(target.value);
-            }
-        });
-        return inputElement;
+        const container = document.createElement('div');
+        container.className = 'button-group-container';
+        this.children.forEach(child => container.appendChild(child));
+        return container;
     }
 }
 
 /******/ })()
 ;
-//# sourceMappingURL=TextInput.js.map
+//# sourceMappingURL=buttonGroup.js.map
