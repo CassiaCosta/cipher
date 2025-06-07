@@ -1,12 +1,12 @@
 .text-input {
     height: 9.0625rem;
-    width: -webkit-fill-available;
+    width: 100%;
     padding: 0.9375rem 0.625rem;
     border: 0.0625rem solid $color-background-light;
     border-radius: 0.5rem;
     color: $color-text-light;
     background-color: $color-background-secondary;
-    font-size: 1rem;
+    font-size: 1rem !important;
     font-family: 'Encode Sans Condensed';
     vertical-align: top;
     text-align: left;
