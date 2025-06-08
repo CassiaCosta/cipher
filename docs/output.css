@@ -159,9 +159,10 @@
   height: 1rem;
   appearance: none;
   -webkit-appearance: none;
+  -moz-appearance: none;
   border-radius: 1rem;
   outline: none;
-  background-color: #2c2c2c;
+  background-color: transparent;
 }
 .slider__input::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -175,8 +176,12 @@
 .slider__input::-webkit-slider-thumb:active {
   background-color: #a9e2e2;
 }
+.slider__input::-webkit-slider-runnable-track {
+  height: 1rem;
+  border-radius: 1rem;
+  background-color: #2c2c2c;
+}
 .slider__input::-moz-range-thumb {
-  appearance: none;
   width: 0.9375rem;
   height: 3.375rem;
   border: 0.3125rem solid #030206;
@@ -188,9 +193,9 @@
   background-color: #a9e2e2;
 }
 .slider__input::-moz-range-track {
-  appearance: none;
-  width: 0.9375rem;
-  height: 3.375rem;
+  height: 1rem;
+  border-radius: 1rem;
+  background-color: #2c2c2c;
 }
 
 .button-group-container {
