@@ -41,6 +41,7 @@
         }
     
         &::-moz-range-thumb {
+            appearance: none;
             width: 0.9375rem;
             height: 3.375rem;
             border: 0.3125rem solid $color-background-primary;
@@ -51,12 +52,6 @@
             &:active {
                 background-color: $color-accent;
             }
-        }
-
-        &::-moz-range-track {
-            height: 0.9375rem;
-            // border-radius: 1rem;
-            // background-color: $color-background-secondary;
         }
         
     }

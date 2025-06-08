@@ -177,6 +177,7 @@
   background-color: #a9e2e2;
 }
 .slider__input::-moz-range-thumb {
+  appearance: none;
   width: 0.9375rem;
   height: 3.375rem;
   border: 0.3125rem solid #030206;
@@ -186,9 +187,6 @@
 }
 .slider__input::-moz-range-thumb:active {
   background-color: #a9e2e2;
-}
-.slider__input::-moz-range-track {
-  height: 0.9375rem;
 }
 
 .button-group-container {
