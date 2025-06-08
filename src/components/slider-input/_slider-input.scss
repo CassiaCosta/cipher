@@ -27,7 +27,6 @@
     
         &::-webkit-slider-thumb {
             -webkit-appearance: none;
-            appearance: none;
             width: 0.9375rem;
             height: 3.375rem;
             border: 0.3125rem solid $color-background-primary;
@@ -52,6 +51,12 @@
             &:active {
                 background-color: $color-accent;
             }
+        }
+
+        &::-moz-range-track {
+            appearance: none;
+            width: 0.9375rem;
+            height: 3.375rem;
         }
         
     }
