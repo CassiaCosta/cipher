@@ -176,8 +176,8 @@
   background-color: #a9e2e2;
 }
 .slider__input::-moz-range-thumb {
-  width: 0.9375rem;
-  height: 3.375rem;
+  width: 0.3rem;
+  height: 3rem;
   border: 0.3125rem solid #030206;
   border-radius: 0.5rem;
   background-color: #d9d9d9;
