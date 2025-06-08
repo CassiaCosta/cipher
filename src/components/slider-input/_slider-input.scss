@@ -51,6 +51,12 @@
                 background-color: $color-accent;
             }
         }
+
+        &::-moz-range-track {
+            height: 0.9375rem;
+            // border-radius: 1rem;
+            // background-color: $color-background-secondary;
+        }
         
     }
 }

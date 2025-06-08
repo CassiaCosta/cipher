@@ -186,6 +186,9 @@
 .slider__input::-moz-range-thumb:active {
   background-color: #a9e2e2;
 }
+.slider__input::-moz-range-track {
+  height: 0.9375rem;
+}
 
 .button-group-container {
   padding: 0.25rem 0;
