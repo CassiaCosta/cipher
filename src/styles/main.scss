@@ -34,9 +34,9 @@ html {
 
 .first-layout {
     // position: relative;
-    padding: 0 0 1.875rem 0;
-    justify-content: end;
-    // height: calc(100vh - 70px);
+    padding: 4.375rem 0 1.875rem 0;
+    // justify-content: end;
+    // height: 100vh;
 
     &__column {
         &--left,
@@ -47,14 +47,17 @@ html {
 
         &--left {
             position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            .title-page {
-                // height: 15rem;
+            // display: flex;
+            // flex-direction: column;
+            // align-items: center;
+            // justify-content: flex-end;
+            .title-page h1 {
                 position: absolute;
-                align-items: end;
+                bottom: 0;
+                z-index: 1;
+                // height: 15rem;
+                // position: absolute;
+                // align-items: end;
             }
         }
 
@@ -74,12 +77,12 @@ html {
         // top: 0;
         // right: 1.8rem;
         opacity: .5;
-        z-index: -1;
+        // z-index: -1;
     }
 
     @media (min-width: 1024px) {
-        height: calc(100vh - 70px);
-        padding: 1.875rem 0;
+        height: 100vh;
+        // padding: 1.875rem 0;
         gap: 5%;
 
         &__column {

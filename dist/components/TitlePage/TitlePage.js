@@ -42,8 +42,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   TitlePage: () => (/* binding */ TitlePage)
 /* harmony export */ });
 class TitlePage {
-    constructor(title) {
+    constructor(title, children = []) {
         this.title = title;
+        this.children = children;
     }
     render() {
         const titleContainer = document.createElement('div');
@@ -51,6 +52,14 @@ class TitlePage {
         const titlePage = document.createElement('h1');
         titlePage.textContent = this.title;
         titleContainer.appendChild(titlePage);
+        this.children.forEach(child => {
+            if (typeof child === 'string') {
+                titleContainer.appendChild(document.createTextNode(child));
+            }
+            else {
+                titleContainer.appendChild(child);
+            }
+        });
         return titleContainer;
     }
 }

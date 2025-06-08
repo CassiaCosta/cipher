@@ -285,6 +285,12 @@ class Header {
                 liNavElement.appendChild(aElement);
                 ulNavElement.appendChild(liNavElement);
             });
+            const listItems = ulNavElement.querySelectorAll('li');
+            listItems.forEach(li => {
+                const element = li;
+                const currentWidth = element.offsetWidth;
+                li.style.width = `${currentWidth + 30}px`;
+            });
         }
     }
     render(container) {
@@ -552,8 +558,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   TitlePage: () => (/* binding */ TitlePage)
 /* harmony export */ });
 class TitlePage {
-    constructor(title) {
+    constructor(title, children = []) {
         this.title = title;
+        this.children = children;
     }
     render() {
         const titleContainer = document.createElement('div');
@@ -561,6 +568,14 @@ class TitlePage {
         const titlePage = document.createElement('h1');
         titlePage.textContent = this.title;
         titleContainer.appendChild(titlePage);
+        this.children.forEach(child => {
+            if (typeof child === 'string') {
+                titleContainer.appendChild(document.createTextNode(child));
+            }
+            else {
+                titleContainer.appendChild(child);
+            }
+        });
         return titleContainer;
     }
 }
@@ -838,7 +853,12 @@ document.addEventListener('DOMContentLoaded', () => {
             { name: 'Sobre', url: '' },
             { name: 'Contato', url: '' }
         ]);
-        const titlePage = new _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_12__.TitlePage("Criptografia Clássica");
+        const imagePage = new _components_render_image_render_image__WEBPACK_IMPORTED_MODULE_13__.RenderImage({
+            src: _assets_images_img_jpg__WEBPACK_IMPORTED_MODULE_1__,
+            alt: '',
+            className: 'first-layout__image'
+        });
+        const titlePage = new _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_12__.TitlePage("Criptografia Clássica", [imagePage.render()]);
         const textInput = new _components_text_input_TextInput__WEBPACK_IMPORTED_MODULE_5__.TextInput({
             id: 'text-input',
             placeholder: 'Digite aqui...',
@@ -905,13 +925,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         const layoutButtonGroup = new _components_button_group_buttonGroup__WEBPACK_IMPORTED_MODULE_10__.ButtonGroup([cryptoButtons.render(), generateButton.render(), clearButton.render()]);
-        const imagePage = new _components_render_image_render_image__WEBPACK_IMPORTED_MODULE_13__.RenderImage({
-            src: _assets_images_img_jpg__WEBPACK_IMPORTED_MODULE_1__,
-            alt: '',
-            className: 'first-layout__image'
-        });
         const columnLayout = new _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_11__.ColumnLayout({
-            leftContent: [titlePage.render(), imagePage.render()],
+            leftContent: [titlePage.render()],
             rightContent: [textInput.render(), sliderInput.render(), layoutButtonGroup.render()],
             className: 'first-layout',
             leftColumnClassName: 'first-layout__column--left',

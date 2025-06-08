@@ -41,7 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
             {name: 'Contato', url: ''}
         ]);
 
-        const titlePage = new TitlePage("Criptografia Clássica");
+        const imagePage = new RenderImage({
+            src: imagePagePath,
+            alt: '',
+            className: 'first-layout__image'
+        })
+
+        const titlePage = new TitlePage("Criptografia Clássica", [imagePage.render()]);
 
         const textInput = new TextInput({
             id: 'text-input',
@@ -119,14 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const layoutButtonGroup = new ButtonGroup([cryptoButtons.render(), generateButton.render(), clearButton.render()]);
 
-        const imagePage = new RenderImage({
-            src: imagePagePath,
-            alt: '',
-            className: 'first-layout__image'
-        })
-
         const columnLayout = new ColumnLayout({
-            leftContent: [titlePage.render(), imagePage.render()],
+            leftContent: [titlePage.render()],
             rightContent: [textInput.render(), sliderInput.render(), layoutButtonGroup.render()],
             className: 'first-layout',
             leftColumnClassName: 'first-layout__column--left',
