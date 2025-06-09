@@ -399,6 +399,7 @@
 .toast--error {
   color: #f44336;
   background-color: #f9d8d6;
+  top: 4.6875rem;
 }
 .toast--error .toast__message {
   padding: 0 0.3125rem;

@@ -30,6 +30,7 @@
     &--error {
         color: $error-text-color;
         background-color: $error-background-color;
+        top: 4.6875rem;
 
         .toast__message {
             padding: 0 0.3125rem;

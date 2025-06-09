@@ -94,12 +94,12 @@ class Header {
                 liNavElement.appendChild(aElement);
                 ulNavElement.appendChild(liNavElement);
             });
-            const listItems = ulNavElement.querySelectorAll('li');
-            listItems.forEach(li => {
-                const element = li;
-                const currentWidth = element.offsetWidth;
-                li.style.width = `${currentWidth + 30}px`;
-            });
+            // const listItems = ulNavElement.querySelectorAll('li');
+            // listItems.forEach(li => {
+            //     const element = li as HTMLElement;
+            //     const currentWidth = element.offsetWidth;
+            //     li.style.width = `${currentWidth + 30}px`;
+            // });
         }
     }
     render(container) {

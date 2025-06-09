@@ -127,6 +127,8 @@
 
             li {
                 justify-content: center;
+                // position: relative;
+                // display: inline-block;
             //     // height: 2rem;
 
             //     a{
@@ -139,6 +141,14 @@
             //             color: $color-accent;
             //         }
             //     }
+
+            // &::after {
+            //     content: '';
+            //     display: inline-block;
+            //     width: 8px; // o “espaço extra”
+            //     height: 1px; // mínimo possível
+            //     visibility: hidden;
+            //   }
             }
         }
     }
