@@ -1,0 +1,1 @@
+export type PageKey = 'home' | 'historia' | 'classico' | 'sobre' | 'contato';

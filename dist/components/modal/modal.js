@@ -226,12 +226,14 @@ class Modal {
         modalBox.appendChild(copyButton);
         overlay.appendChild(modalBox);
         this.modalElement = overlay;
+        document.body.classList.add('modal-open');
         return overlay;
     }
     close() {
         if (this.modalElement && this.modalElement.parentNode) {
             this.modalElement.parentNode.removeChild(this.modalElement);
         }
+        document.body.classList.remove('modal-open');
     }
 }
 

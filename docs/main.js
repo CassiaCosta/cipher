@@ -234,6 +234,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 class Header {
     constructor() {
+        this.handlerClickOutside = (event) => {
+            const target = event.target;
+            const isClickInside = this.headerElement.contains(target);
+            if (!isClickInside) {
+                this.closeMenu();
+            }
+        };
         this.headerElement = document.createElement('header');
         this.headerElement.className = 'header';
         this.appendTemplate(this.headerElement, this.createTemplate());
@@ -264,33 +271,49 @@ class Header {
         if (this.hamburgerIcon) {
             this.hamburgerIcon.addEventListener('click', this.toggleMenu.bind(this));
         }
+        document.addEventListener('click', this.handlerClickOutside);
     }
     toggleMenu() {
-        if (this.hamburgerIcon) {
-            const navbarMenu = this.headerElement.querySelector('#navbar-menu');
-            this.hamburgerIcon.classList.toggle('header__menu-icon--open');
-            if (navbarMenu) {
-                navbarMenu.classList.toggle('header__navbar-menu--visible');
-            }
-        }
+        var _a;
+        const navbarMenu = this.headerElement.querySelector('#navbar-menu');
+        (_a = this.hamburgerIcon) === null || _a === void 0 ? void 0 : _a.classList.toggle('header__menu-icon--open');
+        navbarMenu === null || navbarMenu === void 0 ? void 0 : navbarMenu.classList.toggle('header__navbar-menu--visible');
+        // if (this.hamburgerIcon) {
+        //     if (navbarMenu) {
+        //     }
+        // }
     }
-    setNavLinks(links) {
+    closeMenu() {
+        var _a;
+        const navbarMenu = this.headerElement.querySelector('#navbar-menu');
+        navbarMenu === null || navbarMenu === void 0 ? void 0 : navbarMenu.classList.remove('header__navbar-menu--visible');
+        (_a = this.hamburgerIcon) === null || _a === void 0 ? void 0 : _a.classList.remove('header__menu-icon--open');
+    }
+    setNavLinks(links, onNavigate) {
         const ulNavElement = document.getElementById('menu');
         if (ulNavElement) {
+            ulNavElement.innerHTML = '';
             links.forEach(link => {
-                const liNavElement = document.createElement('li');
-                const aElement = document.createElement('a');
-                aElement.textContent = link.name;
-                aElement.href = link.url;
-                liNavElement.appendChild(aElement);
-                ulNavElement.appendChild(liNavElement);
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.textContent = link.name;
+                a.href = '#';
+                a.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    onNavigate(link.key);
+                    this.closeMenu();
+                });
+                li.appendChild(a);
+                ulNavElement.appendChild(li);
             });
-            // const listItems = ulNavElement.querySelectorAll('li');
-            // listItems.forEach(li => {
-            //     const element = li as HTMLElement;
-            //     const currentWidth = element.offsetWidth;
-            //     li.style.width = `${currentWidth + 30}px`;
-            // });
+            // if (window.innerWidth >= 1024) {
+            //     const listItems = ulNavElement.querySelectorAll('li');
+            //     listItems.forEach(li => {
+            //         const element = li as HTMLElement;
+            //         const currentWidth = element.offsetWidth;
+            //         li.style.width = `${currentWidth + 30}px`;
+            //     });
+            // }
         }
     }
     render(container) {
@@ -388,12 +411,14 @@ class Modal {
         modalBox.appendChild(copyButton);
         overlay.appendChild(modalBox);
         this.modalElement = overlay;
+        document.body.classList.add('modal-open');
         return overlay;
     }
     close() {
         if (this.modalElement && this.modalElement.parentNode) {
             this.modalElement.parentNode.removeChild(this.modalElement);
         }
+        document.body.classList.remove('modal-open');
     }
 }
 
@@ -558,14 +583,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   TitlePage: () => (/* binding */ TitlePage)
 /* harmony export */ });
 class TitlePage {
-    constructor(title, children = []) {
+    constructor(level = 1, title, children = []) {
+        this.level = level;
         this.title = title;
         this.children = children;
     }
     render() {
         const titleContainer = document.createElement('div');
         titleContainer.className = 'title-page';
-        const titlePage = document.createElement('h1');
+        const headingTag = `h${this.level}`;
+        const titlePage = document.createElement(headingTag);
         titlePage.textContent = this.title;
         titleContainer.appendChild(titlePage);
         this.children.forEach(child => {
@@ -623,6 +650,327 @@ class Toast {
                 }
             });
         }, this.duration);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./src/pages/AboutPage.ts":
+/*!********************************!*\
+  !*** ./src/pages/AboutPage.ts ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AboutPage: () => (/* binding */ AboutPage)
+/* harmony export */ });
+/* harmony import */ var _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/main-section/MainSection */ "./src/components/main-section/MainSection.ts");
+/* harmony import */ var _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/column-layout/ColumnLayout */ "./src/components/column-layout/ColumnLayout.ts");
+/* harmony import */ var _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/title/TitlePage */ "./src/components/title/TitlePage.ts");
+
+
+
+class AboutPage {
+    render() {
+        const subtitle = new _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__.TitlePage(2, "Sobre");
+        const layout = new _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__.ColumnLayout({
+            leftContent: [subtitle.render()],
+            rightContent: [],
+            className: 'first-layout',
+            // leftColumnClassName: 'first-layout__column--left',
+            // rightColumnClassName: 'first-layout__column--right',
+            // children: [imagePage.render()]
+        });
+        const section = new _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__.MainSection({
+            className: 'bg-light',
+            children: [layout.render()]
+        });
+        return section.render();
+    }
+}
+
+
+/***/ }),
+
+/***/ "./src/pages/ClassicPage.ts":
+/*!**********************************!*\
+  !*** ./src/pages/ClassicPage.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ClassicPage: () => (/* binding */ ClassicPage)
+/* harmony export */ });
+/* harmony import */ var _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/main-section/MainSection */ "./src/components/main-section/MainSection.ts");
+/* harmony import */ var _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/column-layout/ColumnLayout */ "./src/components/column-layout/ColumnLayout.ts");
+/* harmony import */ var _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/title/TitlePage */ "./src/components/title/TitlePage.ts");
+
+
+
+class ClassicPage {
+    render() {
+        const subtitle = new _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__.TitlePage(2, "Método Clássico");
+        const layout = new _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__.ColumnLayout({
+            leftContent: [subtitle.render()],
+            rightContent: [],
+            className: 'first-layout',
+            // leftColumnClassName: 'first-layout__column--left',
+            // rightColumnClassName: 'first-layout__column--right',
+            // children: [imagePage.render()]
+        });
+        const section = new _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__.MainSection({
+            className: 'bg-light',
+            children: [layout.render()]
+        });
+        return section.render();
+    }
+}
+
+
+/***/ }),
+
+/***/ "./src/pages/HistoryPage.ts":
+/*!**********************************!*\
+  !*** ./src/pages/HistoryPage.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   HistoryPage: () => (/* binding */ HistoryPage)
+/* harmony export */ });
+/* harmony import */ var _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/main-section/MainSection */ "./src/components/main-section/MainSection.ts");
+/* harmony import */ var _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/column-layout/ColumnLayout */ "./src/components/column-layout/ColumnLayout.ts");
+/* harmony import */ var _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/title/TitlePage */ "./src/components/title/TitlePage.ts");
+
+
+
+class HistoryPage {
+    render() {
+        const subtitle = new _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__.TitlePage(2, "História da Criptografia");
+        const layout = new _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__.ColumnLayout({
+            leftContent: [subtitle.render()],
+            rightContent: [],
+            className: 'first-layout',
+            // leftColumnClassName: 'first-layout__column--left',
+            // rightColumnClassName: 'first-layout__column--right',
+            // children: [imagePage.render()]
+        });
+        const section = new _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__.MainSection({
+            className: 'bg-light',
+            children: [layout.render()]
+        });
+        return section.render();
+    }
+}
+
+
+/***/ }),
+
+/***/ "./src/pages/HomePage.ts":
+/*!*******************************!*\
+  !*** ./src/pages/HomePage.ts ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   HomePage: () => (/* binding */ HomePage)
+/* harmony export */ });
+/* harmony import */ var _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/main-section/MainSection */ "./src/components/main-section/MainSection.ts");
+/* harmony import */ var _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/column-layout/ColumnLayout */ "./src/components/column-layout/ColumnLayout.ts");
+/* harmony import */ var _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/title/TitlePage */ "./src/components/title/TitlePage.ts");
+/* harmony import */ var _components_render_image_render_image__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/render-image/render-image */ "./src/components/render-image/render-image.ts");
+/* harmony import */ var _components_text_input_TextInput__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/text-input/TextInput */ "./src/components/text-input/TextInput.ts");
+/* harmony import */ var _components_slider_input_SliderInput__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/slider-input/SliderInput */ "./src/components/slider-input/SliderInput.ts");
+/* harmony import */ var _components_buttons_toggle_button_toggleButton__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/buttons/toggle-button/toggleButton */ "./src/components/buttons/toggle-button/toggleButton.ts");
+/* harmony import */ var _components_buttons_generate_button_generateButton__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/buttons/generate-button/generateButton */ "./src/components/buttons/generate-button/generateButton.ts");
+/* harmony import */ var _components_buttons_clear_button_ClearButton__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/buttons/clear-button/ClearButton */ "./src/components/buttons/clear-button/ClearButton.ts");
+/* harmony import */ var _components_button_group_buttonGroup__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../components/button-group/buttonGroup */ "./src/components/button-group/buttonGroup.ts");
+/* harmony import */ var _components_modal_modal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../components/modal/modal */ "./src/components/modal/modal.ts");
+/* harmony import */ var _components_toast_Toast__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../components/toast/Toast */ "./src/components/toast/Toast.ts");
+/* harmony import */ var _services_cryptography__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../services/cryptography */ "./src/services/cryptography.ts");
+/* harmony import */ var _assets_images_img_jpg__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../assets/images/img.jpg */ "./src/assets/images/img.jpg");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class HomePage {
+    constructor() {
+        this.currentText = '';
+        this.currentShift = 1;
+        this.selectedMode = 'encode';
+    }
+    render() {
+        const image = new _components_render_image_render_image__WEBPACK_IMPORTED_MODULE_3__.RenderImage({
+            src: _assets_images_img_jpg__WEBPACK_IMPORTED_MODULE_13__,
+            alt: '',
+            className: 'first-layout__image'
+        });
+        const titlePage = new _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__.TitlePage(1, "Criptografia Clássica", [image.render()]);
+        const textInput = new _components_text_input_TextInput__WEBPACK_IMPORTED_MODULE_4__.TextInput({
+            id: 'text-input',
+            placeholder: 'Digite aqui...',
+            onChange: (newText) => (this.currentText = newText)
+        });
+        const sliderInput = new _components_slider_input_SliderInput__WEBPACK_IMPORTED_MODULE_5__.SliderInput({
+            id: 'cipher-offset',
+            value: 1,
+            min: 1,
+            max: 26,
+            className: 'custom-slider',
+            label: 'Deslocamento',
+            onChange: (shift) => {
+                console.log(`Deslocamento: ${shift}`);
+                this.currentShift = shift;
+            }
+        });
+        const toggleButton = new _components_buttons_toggle_button_toggleButton__WEBPACK_IMPORTED_MODULE_6__.ToggleButton({
+            onEncode: () => {
+                this.selectedMode = 'encode';
+                console.log('Modo selecionado: Codificar');
+            },
+            onDecode: () => {
+                this.selectedMode = 'decode';
+                console.log('Modo selecionado: Decodificar');
+            }
+        });
+        const generateButton = new _components_buttons_generate_button_generateButton__WEBPACK_IMPORTED_MODULE_7__.GenerateButton({
+            label: 'Gerar',
+            onClick: () => {
+                if (!this.currentText) {
+                    console.log('Nenhum texto inserido!');
+                    new _components_toast_Toast__WEBPACK_IMPORTED_MODULE_11__.Toast({
+                        message: 'Nenhum texto inserido!',
+                        type: 'error',
+                        duration: 2000
+                    }).render();
+                    return;
+                }
+                let resultText;
+                if (this.selectedMode === 'encode') {
+                    resultText = (0,_services_cryptography__WEBPACK_IMPORTED_MODULE_12__.caesarCipher)(this.currentText, this.currentShift);
+                    console.log('Texto codificado:', resultText);
+                }
+                else {
+                    resultText = (0,_services_cryptography__WEBPACK_IMPORTED_MODULE_12__.caesarCipher)(this.currentText, -this.currentShift);
+                    console.log('Texto decodificado:', resultText);
+                }
+                const modal = new _components_modal_modal__WEBPACK_IMPORTED_MODULE_10__.Modal({ content: resultText });
+                document.body.appendChild(modal.render());
+            }
+        });
+        const clearButton = new _components_buttons_clear_button_ClearButton__WEBPACK_IMPORTED_MODULE_8__.ClearButton({
+            elements: ['text-input', 'cipher-offset'],
+            onClearText: () => {
+                this.currentText = '';
+                console.log('Variável de texto resetada: ', this.currentText);
+            },
+            onClearShift: () => {
+                this.currentShift = 1;
+                console.log('Variável de deslocamento resetada: ', this.currentShift);
+            }
+        });
+        const buttonGroup = new _components_button_group_buttonGroup__WEBPACK_IMPORTED_MODULE_9__.ButtonGroup([
+            toggleButton.render(),
+            generateButton.render(),
+            clearButton.render()
+        ]);
+        const layout = new _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__.ColumnLayout({
+            leftContent: [titlePage.render()],
+            rightContent: [
+                textInput.render(),
+                sliderInput.render(),
+                buttonGroup.render()
+            ],
+            className: 'first-layout',
+            leftColumnClassName: 'first-layout__column--left',
+            rightColumnClassName: 'first-layout__column--right',
+            // children: [imagePage.render()]
+        });
+        const section = new _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__.MainSection({
+            className: 'bg-dark',
+            children: [layout.render()]
+        });
+        return section.render();
+    }
+}
+
+
+/***/ }),
+
+/***/ "./src/router.ts":
+/*!***********************!*\
+  !*** ./src/router.ts ***!
+  \***********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Router: () => (/* binding */ Router)
+/* harmony export */ });
+/* harmony import */ var _pages_HomePage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pages/HomePage */ "./src/pages/HomePage.ts");
+/* harmony import */ var _pages_HistoryPage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pages/HistoryPage */ "./src/pages/HistoryPage.ts");
+/* harmony import */ var _pages_ClassicPage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/ClassicPage */ "./src/pages/ClassicPage.ts");
+/* harmony import */ var _pages_AboutPage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/AboutPage */ "./src/pages/AboutPage.ts");
+
+
+
+
+class Router {
+    constructor(main) {
+        this.main = main;
+        window.addEventListener('popstate', () => {
+            const hash = window.location.hash.replace('#', '');
+            this.navigate(hash || 'home', false);
+        });
+    }
+    navigate(page, pushState = true) {
+        if (page === 'contato') {
+            const footer = document.querySelector('footer');
+            if (footer) {
+                footer.scrollIntoView({ behavior: 'smooth' });
+            }
+            if (pushState) {
+                history.pushState({}, '', '#contato');
+            }
+            return;
+        }
+        this.main.innerHTML = '';
+        let view;
+        switch (page) {
+            case 'home':
+                view = new _pages_HomePage__WEBPACK_IMPORTED_MODULE_0__.HomePage().render();
+                break;
+            case 'historia':
+                view = new _pages_HistoryPage__WEBPACK_IMPORTED_MODULE_1__.HistoryPage().render();
+                break;
+            case 'classico':
+                view = new _pages_ClassicPage__WEBPACK_IMPORTED_MODULE_2__.ClassicPage().render();
+                break;
+            case 'sobre':
+                view = new _pages_AboutPage__WEBPACK_IMPORTED_MODULE_3__.AboutPage().render();
+                break;
+            default:
+                view = new _pages_HomePage__WEBPACK_IMPORTED_MODULE_0__.HomePage().render();
+        }
+        this.main.appendChild(view);
+        if (pushState) {
+            history.pushState({}, '', `#${page}`); // Muda URL
+        }
     }
 }
 
@@ -800,35 +1148,9 @@ var __webpack_exports__ = {};
   \*********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_main_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles/main.scss */ "./src/styles/main.scss");
-/* harmony import */ var _assets_images_img_jpg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assets/images/img.jpg */ "./src/assets/images/img.jpg");
-/* harmony import */ var _components_page_container_PageContainer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/page-container/PageContainer */ "./src/components/page-container/PageContainer.ts");
-/* harmony import */ var _components_header_header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/header/header */ "./src/components/header/header.ts");
-/* harmony import */ var _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/main-section/MainSection */ "./src/components/main-section/MainSection.ts");
-/* harmony import */ var _components_text_input_TextInput__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/text-input/TextInput */ "./src/components/text-input/TextInput.ts");
-/* harmony import */ var _components_slider_input_SliderInput__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/slider-input/SliderInput */ "./src/components/slider-input/SliderInput.ts");
-/* harmony import */ var _components_buttons_toggle_button_toggleButton__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/buttons/toggle-button/toggleButton */ "./src/components/buttons/toggle-button/toggleButton.ts");
-/* harmony import */ var _components_buttons_generate_button_generateButton__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/buttons/generate-button/generateButton */ "./src/components/buttons/generate-button/generateButton.ts");
-/* harmony import */ var _components_buttons_clear_button_ClearButton__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/buttons/clear-button/ClearButton */ "./src/components/buttons/clear-button/ClearButton.ts");
-/* harmony import */ var _components_button_group_buttonGroup__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/button-group/buttonGroup */ "./src/components/button-group/buttonGroup.ts");
-/* harmony import */ var _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/column-layout/ColumnLayout */ "./src/components/column-layout/ColumnLayout.ts");
-/* harmony import */ var _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/title/TitlePage */ "./src/components/title/TitlePage.ts");
-/* harmony import */ var _components_render_image_render_image__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/render-image/render-image */ "./src/components/render-image/render-image.ts");
-/* harmony import */ var _components_modal_modal__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/modal/modal */ "./src/components/modal/modal.ts");
-/* harmony import */ var _components_toast_Toast__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/toast/Toast */ "./src/components/toast/Toast.ts");
-/* harmony import */ var _services_cryptography__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./services/cryptography */ "./src/services/cryptography.ts");
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* harmony import */ var _components_page_container_PageContainer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/page-container/PageContainer */ "./src/components/page-container/PageContainer.ts");
+/* harmony import */ var _components_header_header__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/header/header */ "./src/components/header/header.ts");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./router */ "./src/router.ts");
 
 
 
@@ -836,115 +1158,36 @@ __webpack_require__.r(__webpack_exports__);
 document.addEventListener('DOMContentLoaded', () => {
     const appContainer = document.getElementById('app');
     const mainContainer = document.getElementById('main-content');
-    if (appContainer && mainContainer) {
-        const pageContainer = new _components_page_container_PageContainer__WEBPACK_IMPORTED_MODULE_2__.PageContainer().render(appContainer);
-        let currentText = '';
-        let currentShift = 1;
-        let selectedMode = 'encode';
-        while (appContainer.firstChild && appContainer.firstChild !== pageContainer) {
-            pageContainer.appendChild(appContainer.firstChild);
-        }
-        const header = new _components_header_header__WEBPACK_IMPORTED_MODULE_3__.Header();
-        header.render(pageContainer);
-        header.setNavLinks([
-            { name: 'Home', url: '' },
-            { name: 'História da Criptografia', url: '' },
-            { name: 'Método Clássico', url: '' },
-            { name: 'Sobre', url: '' },
-            { name: 'Contato', url: '' }
-        ]);
-        const imagePage = new _components_render_image_render_image__WEBPACK_IMPORTED_MODULE_13__.RenderImage({
-            src: _assets_images_img_jpg__WEBPACK_IMPORTED_MODULE_1__,
-            alt: '',
-            className: 'first-layout__image'
-        });
-        const titlePage = new _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_12__.TitlePage("Criptografia Clássica", [imagePage.render()]);
-        const textInput = new _components_text_input_TextInput__WEBPACK_IMPORTED_MODULE_5__.TextInput({
-            id: 'text-input',
-            placeholder: 'Digite aqui...',
-            onChange: (newText) => {
-                currentText = newText;
-            }
-        });
-        const sliderInput = new _components_slider_input_SliderInput__WEBPACK_IMPORTED_MODULE_6__.SliderInput({
-            id: 'cipher-offset',
-            value: 1,
-            min: 1,
-            max: 26,
-            className: 'custom-slider',
-            label: 'Deslocamento',
-            onChange: (newShift) => {
-                console.log(`Deslocamento: ${newShift}`);
-                currentShift = newShift;
-            }
-        });
-        const cryptoButtons = new _components_buttons_toggle_button_toggleButton__WEBPACK_IMPORTED_MODULE_7__.ToggleButton({
-            onEncode: () => {
-                selectedMode = 'encode';
-                console.log('Modo selecionado: Codificar');
-            },
-            onDecode: () => {
-                selectedMode = 'decode';
-                console.log('Modo selecionado: Decodificar');
-            }
-        });
-        const generateButton = new _components_buttons_generate_button_generateButton__WEBPACK_IMPORTED_MODULE_8__.GenerateButton({
-            label: 'Gerar',
-            onClick: () => {
-                if (!currentText) {
-                    console.log('Nenhum texto inserido!');
-                    new _components_toast_Toast__WEBPACK_IMPORTED_MODULE_15__.Toast({
-                        message: 'Nenhum texto inserido!',
-                        type: 'error',
-                        duration: 2000
-                    }).render();
-                    return;
-                }
-                let resultText;
-                if (selectedMode === 'encode') {
-                    resultText = (0,_services_cryptography__WEBPACK_IMPORTED_MODULE_16__.caesarCipher)(currentText, currentShift);
-                    console.log('Texto codificado:', resultText);
-                }
-                else {
-                    resultText = (0,_services_cryptography__WEBPACK_IMPORTED_MODULE_16__.caesarCipher)(currentText, -currentShift);
-                    console.log('Texto decodificado:', resultText);
-                }
-                const modal = new _components_modal_modal__WEBPACK_IMPORTED_MODULE_14__.Modal({ content: resultText });
-                appContainer.appendChild(modal.render());
-            }
-        });
-        const clearButton = new _components_buttons_clear_button_ClearButton__WEBPACK_IMPORTED_MODULE_9__.ClearButton({
-            elements: ['text-input', 'cipher-offset'],
-            onClearText: () => {
-                currentText = '';
-                console.log('Variável de texto resetada: ', currentText);
-            },
-            onClearShift: () => {
-                currentShift = 1;
-                console.log('Variável de deslocamento resetada: ', currentShift);
-            }
-        });
-        const layoutButtonGroup = new _components_button_group_buttonGroup__WEBPACK_IMPORTED_MODULE_10__.ButtonGroup([cryptoButtons.render(), generateButton.render(), clearButton.render()]);
-        const columnLayout = new _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_11__.ColumnLayout({
-            leftContent: [titlePage.render()],
-            rightContent: [textInput.render(), sliderInput.render(), layoutButtonGroup.render()],
-            className: 'first-layout',
-            leftColumnClassName: 'first-layout__column--left',
-            rightColumnClassName: 'first-layout__column--right',
-            // children: [imagePage.render()]
-        });
-        const mainSection = new _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_4__.MainSection({
-            className: 'bg-dark',
-            children: [columnLayout.render()]
-        });
-        mainContainer.appendChild(mainSection.render());
+    if (!appContainer || !mainContainer)
+        return;
+    // Renderiza o layout principal
+    const pageContainer = new _components_page_container_PageContainer__WEBPACK_IMPORTED_MODULE_1__.PageContainer().render(appContainer);
+    // Garante que o conteúdo atual seja incluído dentro do container
+    while (appContainer.firstChild && appContainer.firstChild !== pageContainer) {
+        pageContainer.appendChild(appContainer.firstChild);
     }
-    function getScreenSize() {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-        console.log(`Largura da tela: ${width}px, Altura da tela ${height}px`);
-    }
-    const screenSize = getScreenSize();
+    const router = new _router__WEBPACK_IMPORTED_MODULE_3__.Router(mainContainer);
+    // Cria e renderiza o Header
+    const header = new _components_header_header__WEBPACK_IMPORTED_MODULE_2__.Header();
+    header.render(pageContainer);
+    // Define os links e passa a função de navegação
+    header.setNavLinks([
+        { name: 'Home', key: 'home' },
+        { name: 'História da Criptografia', key: 'historia' },
+        { name: 'Método Clássico', key: 'classico' },
+        { name: 'Sobre', key: 'sobre' },
+        { name: 'Contato', key: 'contato' }
+    ], (pageKey) => {
+        router.navigate(pageKey);
+    });
+    const initialPage = (window.location.hash.replace('#', '') || 'home');
+    router.navigate(initialPage);
+    // function getScreenSize() {
+    //     const width = window.innerWidth;
+    //     const height = window.innerHeight;
+    //     console.log(`Largura da tela: ${width}px, Altura da tela ${height}px`);
+    // }
+    // const screenSize = getScreenSize();
 });
 
 /******/ })()

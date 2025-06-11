@@ -42,14 +42,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   TitlePage: () => (/* binding */ TitlePage)
 /* harmony export */ });
 class TitlePage {
-    constructor(title, children = []) {
+    constructor(level = 1, title, children = []) {
+        this.level = level;
         this.title = title;
         this.children = children;
     }
     render() {
         const titleContainer = document.createElement('div');
         titleContainer.className = 'title-page';
-        const titlePage = document.createElement('h1');
+        const headingTag = `h${this.level}`;
+        const titlePage = document.createElement(headingTag);
         titlePage.textContent = this.title;
         titleContainer.appendChild(titlePage);
         this.children.forEach(child => {

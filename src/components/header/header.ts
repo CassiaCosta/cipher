@@ -7,9 +7,7 @@ export class Header {
         this.headerElement.className = 'header';
         
         this.appendTemplate(this.headerElement, this.createTemplate());
-
         this.hamburgerIcon = this.headerElement.querySelector('#menu-icon');
-
         this.addEventListeners();
     }
 
@@ -40,42 +38,72 @@ export class Header {
         if (this.hamburgerIcon) {
             this.hamburgerIcon.addEventListener('click', this.toggleMenu.bind(this));
         }
+
+        document.addEventListener('click', this.handlerClickOutside);
     }
 
     private toggleMenu(): void {
-        if (this.hamburgerIcon) {
-            const navbarMenu = this.headerElement.querySelector('#navbar-menu');
+        const navbarMenu = this.headerElement.querySelector('#navbar-menu');
+        this.hamburgerIcon?.classList.toggle('header__menu-icon--open');
+        navbarMenu?.classList.toggle('header__navbar-menu--visible');
+        // if (this.hamburgerIcon) {
 
-            this.hamburgerIcon.classList.toggle('header__menu-icon--open');
-            if (navbarMenu) {
-                navbarMenu.classList.toggle('header__navbar-menu--visible');
-            }
-        }
+        //     if (navbarMenu) {
+        //     }
+        // }
     }
 
-    setNavLinks(links: {name: string, url: string}[]): void {
+    private closeMenu(): void {
+        const navbarMenu = this.headerElement.querySelector('#navbar-menu');
+        navbarMenu?.classList.remove('header__navbar-menu--visible');
+        this.hamburgerIcon?.classList.remove('header__menu-icon--open');
+    }
+
+    private handlerClickOutside = (event: MouseEvent): void => {
+        const target = event.target as HTMLElement;
+        const isClickInside = this.headerElement.contains(target);
+
+        if (!isClickInside) {
+            this.closeMenu();
+        }
+    };
+
+    setNavLinks(
+        links: { name: string, key: string }[],
+        onNavigate: (key: string) => void
+    ): void {
         const ulNavElement = document.getElementById('menu');        
 
         if (ulNavElement) {
+
+            ulNavElement.innerHTML = '';
+
             links.forEach(link => {
-                const liNavElement = document.createElement('li');
-                const aElement = document.createElement('a');
+                const li = document.createElement('li');
+                const a = document.createElement('a');
     
-                aElement.textContent = link.name;
-                aElement.href = link.url;
+                a.textContent = link.name;
+                a.href = '#';
+                a.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    onNavigate(link.key);
+                    this.closeMenu();
+                });
     
-                liNavElement.appendChild(aElement);
-                ulNavElement.appendChild(liNavElement);
+                li.appendChild(a);
+                ulNavElement.appendChild(li);
             });
 
-            // const listItems = ulNavElement.querySelectorAll('li');
-            
-            // listItems.forEach(li => {
-            //     const element = li as HTMLElement;
-            //     const currentWidth = element.offsetWidth;
-
-            //     li.style.width = `${currentWidth + 30}px`;
-            // });
+            // if (window.innerWidth >= 1024) {
+            //     const listItems = ulNavElement.querySelectorAll('li');
+                
+            //     listItems.forEach(li => {
+            //         const element = li as HTMLElement;
+            //         const currentWidth = element.offsetWidth;
+    
+            //         li.style.width = `${currentWidth + 30}px`;
+            //     });
+            // }
         }
     }
 

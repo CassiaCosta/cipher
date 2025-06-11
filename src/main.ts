@@ -1,153 +1,49 @@
 import './styles/main.scss';
-import imagePagePath from './assets/images/img.jpg';
 import { PageContainer } from './components/page-container/PageContainer';
 import { Header } from './components/header/header';
-import { MainSection } from './components/main-section/MainSection';
-import { TextInput } from './components/text-input/TextInput';
-import { SliderInput } from './components/slider-input/SliderInput';
-import { ToggleButton } from './components/buttons/toggle-button/toggleButton';
-import { GenerateButton } from './components/buttons/generate-button/generateButton';
-import { ClearButton } from './components/buttons/clear-button/ClearButton';
-import { ButtonGroup } from './components/button-group/buttonGroup';
-import { ColumnLayout } from './components/column-layout/ColumnLayout';
-import { TitlePage } from './components/title/TitlePage';
-import { RenderImage } from './components/render-image/render-image';
-import { Modal } from './components/modal/modal';
-import { Toast } from './components/toast/Toast';
-import { caesarCipher } from './services/cryptography';
+import { Router } from './router';
+import { PageKey } from "./types/PageKey";
 
 document.addEventListener('DOMContentLoaded', () => {
     const appContainer = document.getElementById('app');
     const mainContainer = document.getElementById('main-content');
     
-    if (appContainer && mainContainer) {
-        const pageContainer = new PageContainer().render(appContainer);
+    if (!appContainer || !mainContainer) return;
+    
+    // Renderiza o layout principal
+    const pageContainer = new PageContainer().render(appContainer);
 
-        let currentText = '';
-        let currentShift = 1;
-        let selectedMode: 'encode' | 'decode' = 'encode';
-
-        while (appContainer.firstChild && appContainer.firstChild !== pageContainer) {
-            pageContainer.appendChild(appContainer.firstChild);
-        }
-
-        const header = new Header();
-        header.render(pageContainer);
-        header.setNavLinks([
-            {name: 'Home', url: ''},
-            {name: 'História da Criptografia', url: ''},
-            {name: 'Método Clássico', url: ''},
-            {name: 'Sobre', url: ''},
-            {name: 'Contato', url: ''}
-        ]);
-
-        const imagePage = new RenderImage({
-            src: imagePagePath,
-            alt: '',
-            className: 'first-layout__image'
-        })
-
-        const titlePage = new TitlePage("Criptografia Clássica", [imagePage.render()]);
-
-        const textInput = new TextInput({
-            id: 'text-input',
-            placeholder: 'Digite aqui...',
-            onChange: (newText) => {
-                currentText = newText;
-            }
-        });
-
-        const sliderInput = new SliderInput({
-            id: 'cipher-offset',
-            value: 1,
-            min: 1,
-            max: 26,
-            className: 'custom-slider',
-            label: 'Deslocamento',
-            onChange: (newShift) => {
-                console.log(`Deslocamento: ${newShift}`);
-                currentShift = newShift;
-            }
-        })
-
-        const cryptoButtons = new ToggleButton({
-            onEncode: () => {
-                selectedMode = 'encode';
-                console.log('Modo selecionado: Codificar');
-
-            },
-            onDecode: () => {
-                selectedMode = 'decode';
-                console.log('Modo selecionado: Decodificar');
-            }
-        });
-
-        const generateButton = new GenerateButton({
-            label: 'Gerar',
-            onClick: () => {
-                if (!currentText) {
-                    console.log('Nenhum texto inserido!');
-                    new Toast({
-                        message: 'Nenhum texto inserido!',
-                        type: 'error',
-                        duration: 2000
-                    }).render();
-                    return;
-                }
-
-                let resultText;
-                
-                if (selectedMode === 'encode') {
-                    resultText = caesarCipher(currentText, currentShift);
-                    console.log('Texto codificado:', resultText);
-                } else {
-                    resultText = caesarCipher(currentText, -currentShift);
-                    console.log('Texto decodificado:', resultText);
-                }
-
-                const modal = new Modal({ content: resultText });
-
-                appContainer.appendChild(modal.render());
-            }          
-        })
-
-        const clearButton = new ClearButton({
-            elements: ['text-input', 'cipher-offset'],
-            onClearText: () => {
-                currentText = '';
-                console.log('Variável de texto resetada: ', currentText);
-            },
-            onClearShift: () => {
-                currentShift = 1;
-                console.log('Variável de deslocamento resetada: ', currentShift);
-            }
-        })
-
-        const layoutButtonGroup = new ButtonGroup([cryptoButtons.render(), generateButton.render(), clearButton.render()]);
-
-        const columnLayout = new ColumnLayout({
-            leftContent: [titlePage.render()],
-            rightContent: [textInput.render(), sliderInput.render(), layoutButtonGroup.render()],
-            className: 'first-layout',
-            leftColumnClassName: 'first-layout__column--left',
-            rightColumnClassName: 'first-layout__column--right',
-            // children: [imagePage.render()]
-        })
-
-        const mainSection = new MainSection({
-            className: 'bg-dark',
-            children: [columnLayout.render()]
-        });
-
-        mainContainer.appendChild(mainSection.render());
+    // Garante que o conteúdo atual seja incluído dentro do container
+    while (appContainer.firstChild && appContainer.firstChild !== pageContainer) {
+        pageContainer.appendChild(appContainer.firstChild);
     }
+    
+    const router = new Router(mainContainer);
 
-    function getScreenSize() {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
+    // Cria e renderiza o Header
+    const header = new Header();
+    header.render(pageContainer);
 
-        console.log(`Largura da tela: ${width}px, Altura da tela ${height}px`);
-    }
+    // Define os links e passa a função de navegação
+    header.setNavLinks([
+        {name: 'Home', key: 'home'},
+        {name: 'História da Criptografia', key: 'historia'},
+        {name: 'Método Clássico', key: 'classico'},
+        {name: 'Sobre', key: 'sobre'},
+        {name: 'Contato', key: 'contato'}
+    ], (pageKey: string) => {
+        router.navigate(pageKey as PageKey);
+    });
 
-    const screenSize = getScreenSize();
+    const initialPage = (window.location.hash.replace('#', '') || 'home') as PageKey;
+    router.navigate(initialPage);
+
+    // function getScreenSize() {
+    //     const width = window.innerWidth;
+    //     const height = window.innerHeight;
+
+    //     console.log(`Largura da tela: ${width}px, Altura da tela ${height}px`);
+    // }
+
+    // const screenSize = getScreenSize();
 });

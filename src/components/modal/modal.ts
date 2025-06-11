@@ -60,6 +60,8 @@ export class Modal {
 
         this.modalElement = overlay;
 
+        document.body.classList.add('modal-open');
+
         return overlay;
     }
 
@@ -67,5 +69,7 @@ export class Modal {
         if (this.modalElement && this.modalElement.parentNode) {
             this.modalElement.parentNode.removeChild(this.modalElement);
         }
+
+        document.body.classList.remove('modal-open');
     }
 }
