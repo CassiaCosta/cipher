@@ -14,6 +14,105 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/components/accordion/Accordion.ts":
+/*!***********************************************!*\
+  !*** ./src/components/accordion/Accordion.ts ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Accordion: () => (/* binding */ Accordion)
+/* harmony export */ });
+/* harmony import */ var _AccordionItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AccordionItem */ "./src/components/accordion/AccordionItem.ts");
+
+class Accordion {
+    constructor(sections) {
+        this.openIndex = null;
+        this.toggle = (index) => {
+            if (this.openIndex === index) {
+                this.openIndex = null;
+            }
+            else {
+                this.openIndex = index;
+            }
+            this.render();
+        };
+        this.sections = sections;
+    }
+    render() {
+        const container = document.createElement('div');
+        container.className = 'accordion-container';
+        this.sections.forEach((section, index) => {
+            const item = new _AccordionItem__WEBPACK_IMPORTED_MODULE_0__.AccordionItem({
+                title: section.title,
+                content: section.content,
+                isOpen: index === this.openIndex,
+                onToggle: () => {
+                    this.toggle(index);
+                    const newRender = this.render();
+                    container.replaceWith(newRender);
+                }
+            });
+            container.appendChild(item.render());
+        });
+        return container;
+    }
+}
+
+
+/***/ }),
+
+/***/ "./src/components/accordion/AccordionItem.ts":
+/*!***************************************************!*\
+  !*** ./src/components/accordion/AccordionItem.ts ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AccordionItem: () => (/* binding */ AccordionItem)
+/* harmony export */ });
+/* harmony import */ var _assets_icons_chevron_right_svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../assets/icons/chevron-right.svg */ "./src/assets/icons/chevron-right.svg");
+/* harmony import */ var _assets_icons_chevron_down_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../assets/icons/chevron-down.svg */ "./src/assets/icons/chevron-down.svg");
+
+
+class AccordionItem {
+    constructor(props) {
+        this.props = props;
+        this.container = this.createItem();
+    }
+    createItem() {
+        const item = document.createElement('div');
+        item.className = 'accordion-item';
+        const header = document.createElement('div');
+        header.className = 'accordion-header';
+        header.addEventListener('click', () => this.props.onToggle());
+        const icon = document.createElement('img');
+        icon.className = 'accordion-icon';
+        icon.src = this.props.isOpen ? _assets_icons_chevron_down_svg__WEBPACK_IMPORTED_MODULE_1__ : _assets_icons_chevron_right_svg__WEBPACK_IMPORTED_MODULE_0__;
+        const titleEl = document.createElement('span');
+        titleEl.className = 'accordion-title';
+        titleEl.textContent = this.props.title;
+        header.appendChild(icon);
+        header.appendChild(titleEl);
+        item.appendChild(header);
+        if (this.props.isOpen) {
+            const content = document.createElement('div');
+            content.className = 'accordion-content';
+            content.textContent = this.props.content;
+            item.appendChild(content);
+        }
+        return item;
+    }
+    render() {
+        return this.container;
+    }
+}
+
+
+/***/ }),
+
 /***/ "./src/components/button-group/buttonGroup.ts":
 /*!****************************************************!*\
   !*** ./src/components/button-group/buttonGroup.ts ***!
@@ -216,6 +315,35 @@ class ColumnLayout {
             });
         }
         return columnLayoutContainer;
+    }
+}
+
+
+/***/ }),
+
+/***/ "./src/components/description/TextSection.ts":
+/*!***************************************************!*\
+  !*** ./src/components/description/TextSection.ts ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TextSection: () => (/* binding */ TextSection)
+/* harmony export */ });
+class TextSection {
+    constructor(paragraphs) {
+        this.paragraphs = paragraphs;
+    }
+    render() {
+        const container = document.createElement('div');
+        container.className = 'text-section';
+        this.paragraphs.forEach(text => {
+            const p = document.createElement('p');
+            p.textContent = text;
+            container.appendChild(p);
+        });
+        return container;
     }
 }
 
@@ -669,14 +797,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/main-section/MainSection */ "./src/components/main-section/MainSection.ts");
 /* harmony import */ var _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/column-layout/ColumnLayout */ "./src/components/column-layout/ColumnLayout.ts");
 /* harmony import */ var _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/title/TitlePage */ "./src/components/title/TitlePage.ts");
+/* harmony import */ var _components_description_TextSection__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/description/TextSection */ "./src/components/description/TextSection.ts");
+
 
 
 
 class AboutPage {
     render() {
         const subtitle = new _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__.TitlePage(2, "Sobre");
+        const aboutParagraphs = [
+            'Os métodos clássicos de criptografia referem-se às técnicas e algoritmos de cifragem desenvolvidos antes da era dos computadores, usados para proteger mensagens ao longo da história. Esses métodos envolvem a transformação do texto simples em um texto cifrado, de maneira que apenas aqueles que conhecem a chave de cifragem possam entender a mensagem original.'
+        ];
+        const description = new _components_description_TextSection__WEBPACK_IMPORTED_MODULE_3__.TextSection(aboutParagraphs);
         const layout = new _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__.ColumnLayout({
-            leftContent: [subtitle.render()],
+            leftContent: [subtitle.render(), description.render()],
             rightContent: [],
             className: 'first-layout',
             // leftColumnClassName: 'first-layout__column--left',
@@ -707,14 +841,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/main-section/MainSection */ "./src/components/main-section/MainSection.ts");
 /* harmony import */ var _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/column-layout/ColumnLayout */ "./src/components/column-layout/ColumnLayout.ts");
 /* harmony import */ var _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/title/TitlePage */ "./src/components/title/TitlePage.ts");
+/* harmony import */ var _components_description_TextSection__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/description/TextSection */ "./src/components/description/TextSection.ts");
+
 
 
 
 class ClassicPage {
     render() {
         const subtitle = new _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__.TitlePage(2, "Método Clássico");
+        const classicParagraphs = [
+            'Os métodos clássicos de criptografia referem-se às técnicas e algoritmos de cifragem desenvolvidos antes da era dos computadores, usados para proteger mensagens ao longo da história. Esses métodos envolvem a transformação do texto simples em um texto cifrado, de maneira que apenas aqueles que conhecem a chave de cifragem possam entender a mensagem original.'
+        ];
+        const description = new _components_description_TextSection__WEBPACK_IMPORTED_MODULE_3__.TextSection(classicParagraphs);
         const layout = new _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__.ColumnLayout({
-            leftContent: [subtitle.render()],
+            leftContent: [subtitle.render(), description.render()],
             rightContent: [],
             className: 'first-layout',
             // leftColumnClassName: 'first-layout__column--left',
@@ -745,15 +885,47 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/main-section/MainSection */ "./src/components/main-section/MainSection.ts");
 /* harmony import */ var _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/column-layout/ColumnLayout */ "./src/components/column-layout/ColumnLayout.ts");
 /* harmony import */ var _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/title/TitlePage */ "./src/components/title/TitlePage.ts");
+/* harmony import */ var _components_description_TextSection__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/description/TextSection */ "./src/components/description/TextSection.ts");
+/* harmony import */ var _components_accordion_Accordion__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/accordion/Accordion */ "./src/components/accordion/Accordion.ts");
+
+
 
 
 
 class HistoryPage {
     render() {
         const subtitle = new _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__.TitlePage(2, "História da Criptografia");
+        const historyParagraphs = [
+            'A criptografia é a arte e ciência de codificar mensagens para proteger informações, e sua história é tão antiga quanto a própria escrita.',
+            'Desde tempos remotos, civilizações buscaram formas de ocultar suas comunicações para proteger segredos militares, políticos e comerciais.'
+        ];
+        const sections = [
+            {
+                title: 'Origens Antigas',
+                content: ''
+            },
+            {
+                title: 'Criptografia Medieval',
+                content: 'Durante a Idade Média, a criptografia tornou-se mais sofisticada, especialmente nas cortes reais e no âmbito religioso. O Papa Gregório XIII, por exemplo, usava cifras para proteger suas correspondências. Nesse período, surgiram métodos de substituição mais complexos, como a cifra de Vigenère, que empregava um padrão de letras para criar uma chave mais difícil de decifrar.'
+            },
+            {
+                title: 'Renascimento e Avanços Científicos',
+                content: ''
+            },
+            {
+                title: 'Criptografia Moderna',
+                content: ''
+            },
+            {
+                title: 'Era Digital',
+                content: 'No século XX, com o avanço dos computadores, a criptografia evoluiu rapidamente. O desenvolvimento da criptografia de chave pública, com figuras como Whitfield Diffie e Martin Hellman, revolucionou o campo, tornando a comunicação segura mais acessível. Hoje, a criptografia é um componente essencial na segurança digital, protegendo desde transações financeiras até comunicações pessoais.'
+            },
+        ];
+        const description = new _components_description_TextSection__WEBPACK_IMPORTED_MODULE_3__.TextSection(historyParagraphs);
+        const accordion = new _components_accordion_Accordion__WEBPACK_IMPORTED_MODULE_4__.Accordion(sections);
         const layout = new _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__.ColumnLayout({
-            leftContent: [subtitle.render()],
-            rightContent: [],
+            leftContent: [subtitle.render(), description.render()],
+            rightContent: [accordion.render()],
             className: 'first-layout',
             // leftColumnClassName: 'first-layout__column--left',
             // rightColumnClassName: 'first-layout__column--right',
@@ -1008,6 +1180,26 @@ function caesarCipher(text, shift) {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "assets/images/check-small-icon.svg";
+
+/***/ }),
+
+/***/ "./src/assets/icons/chevron-down.svg":
+/*!*******************************************!*\
+  !*** ./src/assets/icons/chevron-down.svg ***!
+  \*******************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "assets/images/chevron-down.svg";
+
+/***/ }),
+
+/***/ "./src/assets/icons/chevron-right.svg":
+/*!********************************************!*\
+  !*** ./src/assets/icons/chevron-right.svg ***!
+  \********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "assets/images/chevron-right.svg";
 
 /***/ }),
 

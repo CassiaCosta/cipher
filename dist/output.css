@@ -346,6 +346,7 @@ body.modal-open {
   z-index: 9999999;
 }
 .modal__box {
+  height: 14.6875rem;
   max-height: 31.25rem;
   display: flex;
   flex-direction: column;
@@ -363,6 +364,7 @@ body.modal-open {
   cursor: pointer;
 }
 .modal__content {
+  height: 100%;
   overflow-y: auto;
   font-family: "Encode Sans Condensed";
   font-size: 1rem;
@@ -375,6 +377,11 @@ body.modal-open {
   background: none;
   padding-right: 0.3125rem;
   cursor: pointer;
+}
+@media (min-width: 1024px) {
+  .modal__box {
+    width: 80%;
+  }
 }
 
 .toast {
