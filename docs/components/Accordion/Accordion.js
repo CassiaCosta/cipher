@@ -2,47 +2,59 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/components/accordion/AccordionItem.ts":
-/*!***************************************************!*\
-  !*** ./src/components/accordion/AccordionItem.ts ***!
-  \***************************************************/
+/***/ "./src/components/accordion/accordion-item/AccordionItem.ts":
+/*!******************************************************************!*\
+  !*** ./src/components/accordion/accordion-item/AccordionItem.ts ***!
+  \******************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AccordionItem: () => (/* binding */ AccordionItem)
 /* harmony export */ });
-/* harmony import */ var _assets_icons_chevron_right_svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../assets/icons/chevron-right.svg */ "./src/assets/icons/chevron-right.svg");
-/* harmony import */ var _assets_icons_chevron_down_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../assets/icons/chevron-down.svg */ "./src/assets/icons/chevron-down.svg");
+/* harmony import */ var _assets_icons_chevron_right_svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../assets/icons/chevron-right.svg */ "./src/assets/icons/chevron-right.svg");
+/* harmony import */ var _assets_icons_chevron_down_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../assets/icons/chevron-down.svg */ "./src/assets/icons/chevron-down.svg");
 
 
 class AccordionItem {
     constructor(props) {
+        this.isOpen = false;
         this.props = props;
         this.container = this.createItem();
     }
     createItem() {
         const item = document.createElement('div');
-        item.className = 'accordion-item';
+        item.className = 'accordion__item';
         const header = document.createElement('div');
-        header.className = 'accordion-header';
+        header.className = 'accordion__header';
         header.addEventListener('click', () => this.props.onToggle());
-        const icon = document.createElement('img');
-        icon.className = 'accordion-icon';
-        icon.src = this.props.isOpen ? _assets_icons_chevron_down_svg__WEBPACK_IMPORTED_MODULE_1__ : _assets_icons_chevron_right_svg__WEBPACK_IMPORTED_MODULE_0__;
+        this.icon = document.createElement('img');
+        this.icon.className = 'accordion__icon';
+        this.icon.src = _assets_icons_chevron_right_svg__WEBPACK_IMPORTED_MODULE_0__;
         const titleEl = document.createElement('span');
-        titleEl.className = 'accordion-title';
+        titleEl.className = 'accordion__title';
         titleEl.textContent = this.props.title;
-        header.appendChild(icon);
+        header.appendChild(this.icon);
         header.appendChild(titleEl);
         item.appendChild(header);
-        if (this.props.isOpen) {
-            const content = document.createElement('div');
-            content.className = 'accordion-content';
-            content.textContent = this.props.content;
-            item.appendChild(content);
-        }
+        this.content = document.createElement('div');
+        this.content.className = 'accordion__content';
+        const innerContent = document.createElement('div');
+        innerContent.className = 'accordion__content-inner';
+        innerContent.textContent = this.props.content;
+        this.content.appendChild(innerContent);
+        item.appendChild(this.content);
         return item;
+    }
+    open() {
+        this.isOpen = true;
+        this.container.classList.add('accordion__item--open');
+        this.icon.src = _assets_icons_chevron_down_svg__WEBPACK_IMPORTED_MODULE_1__;
+    }
+    close() {
+        this.isOpen = false;
+        this.container.classList.remove('accordion__item--open');
+        this.icon.src = _assets_icons_chevron_right_svg__WEBPACK_IMPORTED_MODULE_0__;
     }
     render() {
         return this.container;
@@ -171,39 +183,44 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Accordion: () => (/* binding */ Accordion)
 /* harmony export */ });
-/* harmony import */ var _AccordionItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AccordionItem */ "./src/components/accordion/AccordionItem.ts");
+/* harmony import */ var _accordion_item_AccordionItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./accordion-item/AccordionItem */ "./src/components/accordion/accordion-item/AccordionItem.ts");
 
 class Accordion {
     constructor(sections) {
+        this.items = [];
         this.openIndex = null;
         this.toggle = (index) => {
+            if (this.openIndex !== null && this.openIndex !== index) {
+                this.items[this.openIndex].close();
+            }
             if (this.openIndex === index) {
+                this.items[index].close();
                 this.openIndex = null;
             }
             else {
+                this.items[index].open();
                 this.openIndex = index;
             }
-            this.render();
         };
         this.sections = sections;
+        this.container = this.createAccordion();
     }
-    render() {
+    createAccordion() {
         const container = document.createElement('div');
-        container.className = 'accordion-container';
+        container.className = 'accordion';
         this.sections.forEach((section, index) => {
-            const item = new _AccordionItem__WEBPACK_IMPORTED_MODULE_0__.AccordionItem({
+            const item = new _accordion_item_AccordionItem__WEBPACK_IMPORTED_MODULE_0__.AccordionItem({
                 title: section.title,
                 content: section.content,
-                isOpen: index === this.openIndex,
-                onToggle: () => {
-                    this.toggle(index);
-                    const newRender = this.render();
-                    container.replaceWith(newRender);
-                }
+                onToggle: () => this.toggle(index)
             });
+            this.items.push(item);
             container.appendChild(item.render());
         });
         return container;
+    }
+    render() {
+        return this.container;
     }
 }
 

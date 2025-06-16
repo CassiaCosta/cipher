@@ -1,8 +1,8 @@
 import { PageKey } from "./types/PageKey";
-import { HomePage } from "./pages/HomePage";
-import { HistoryPage } from "./pages/HistoryPage";
-import { ClassicPage } from "./pages/ClassicPage";
-import { AboutPage } from "./pages/AboutPage";
+import { HomePage } from "./pages/home/HomePage";
+import { HistoryPage } from "./pages/history/HistoryPage";
+import { ClassicPage } from "./pages/classic/ClassicPage";
+import { AboutPage } from "./pages/about/AboutPage";
 
 export class Router {
     constructor(private main: HTMLElement) {

@@ -1,8 +1,8 @@
-import { MainSection } from '../components/main-section/MainSection';
-import { ColumnLayout } from '../components/column-layout/ColumnLayout';
-import { TitlePage } from '../components/title/TitlePage';
-import { TextSection } from '../components/description/TextSection';
-import { Accordion } from '../components/accordion/Accordion';
+import { MainSection } from '../../components/main-section/MainSection';
+import { ColumnLayout } from '../../components/column-layout/ColumnLayout';
+import { TitlePage } from '../../components/title/TitlePage';
+import { TextSection } from '../../components/description/TextSection';
+import { Accordion } from '../../components/accordion/Accordion';
 
 export class HistoryPage {
     render(): HTMLElement {
@@ -15,7 +15,7 @@ export class HistoryPage {
         const sections = [
             {
                 title: 'Origens Antigas',
-                content: ''
+                content: 'Durante a Idade Média, a criptografia tornou-se mais sofisticada, especialmente nas cortes reais e no âmbito religioso. O Papa Gregório XIII, por exemplo, usava cifras para proteger suas correspondências. Nesse período, surgiram métodos de substituição mais complexos, como a cifra de Vigenère, que empregava um padrão de letras para criar uma chave mais difícil de decifrar.'
             },
             {
                 title: 'Criptografia Medieval',
@@ -23,11 +23,11 @@ export class HistoryPage {
             },
             {
                 title: 'Renascimento e Avanços Científicos',
-                content: ''
+                content: 'Durante a Idade Média, a criptografia tornou-se mais sofisticada, especialmente nas cortes reais e no âmbito religioso. O Papa Gregório XIII, por exemplo, usava cifras para proteger suas correspondências. Nesse período, surgiram métodos de substituição mais complexos, como a cifra de Vigenère, que empregava um padrão de letras para criar uma chave mais difícil de decifrar.'
             },
             {
                 title: 'Criptografia Moderna',
-                content: ''
+                content: 'Durante a Idade Média, a criptografia tornou-se mais sofisticada, especialmente nas cortes reais e no âmbito religioso. O Papa Gregório XIII, por exemplo, usava cifras para proteger suas correspondências. Nesse período, surgiram métodos de substituição mais complexos, como a cifra de Vigenère, que empregava um padrão de letras para criar uma chave mais difícil de decifrar.'
             },
             {
                 title: 'Era Digital',
@@ -43,9 +43,8 @@ export class HistoryPage {
             leftContent: [subtitle.render(), description.render()],
             rightContent: [accordion.render()],
             className: 'first-layout',
-            // leftColumnClassName: 'first-layout__column--left',
-            // rightColumnClassName: 'first-layout__column--right',
-            // children: [imagePage.render()]
+            leftColumnClassName: 'first-layout__column--left',
+            rightColumnClassName: 'first-layout__column--right',
         });
 
         const section = new MainSection({

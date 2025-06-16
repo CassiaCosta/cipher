@@ -1,0 +1,50 @@
+.accordion {
+    &__item {
+        font-size: 14px;
+        border-bottom: $color-border-dark 1px solid;
+
+        &:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        &:last-child {
+            border-bottom: none;
+            border-radius: 0 0 8px 8px;
+        }
+
+        &--open {
+            background-color: $color-background-secondary;
+
+            .accordion__header {
+                color: $color-text-accent;
+            }
+
+            .accordion__content {
+                color: $color-text-light;
+                max-height: 500px;
+            }
+        }
+    }
+
+    &__header {
+        color: $color-text-dark;
+        background-color: transparent;
+        padding: 5px 0;
+        display: flex;
+        align-items: center;
+        font-family: 'Cinzel';
+        font-weight: bold;
+    }
+
+    &__content-inner {
+        padding: 12px 20px;
+    }
+
+    &__content {
+        font-family: 'Roboto';
+        font-weight: lighter;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .3s ease;
+    }
+}

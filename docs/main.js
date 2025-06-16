@@ -24,86 +24,103 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Accordion: () => (/* binding */ Accordion)
 /* harmony export */ });
-/* harmony import */ var _AccordionItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AccordionItem */ "./src/components/accordion/AccordionItem.ts");
+/* harmony import */ var _accordion_item_AccordionItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./accordion-item/AccordionItem */ "./src/components/accordion/accordion-item/AccordionItem.ts");
 
 class Accordion {
     constructor(sections) {
+        this.items = [];
         this.openIndex = null;
         this.toggle = (index) => {
+            if (this.openIndex !== null && this.openIndex !== index) {
+                this.items[this.openIndex].close();
+            }
             if (this.openIndex === index) {
+                this.items[index].close();
                 this.openIndex = null;
             }
             else {
+                this.items[index].open();
                 this.openIndex = index;
             }
-            this.render();
         };
         this.sections = sections;
+        this.container = this.createAccordion();
     }
-    render() {
+    createAccordion() {
         const container = document.createElement('div');
-        container.className = 'accordion-container';
+        container.className = 'accordion';
         this.sections.forEach((section, index) => {
-            const item = new _AccordionItem__WEBPACK_IMPORTED_MODULE_0__.AccordionItem({
+            const item = new _accordion_item_AccordionItem__WEBPACK_IMPORTED_MODULE_0__.AccordionItem({
                 title: section.title,
                 content: section.content,
-                isOpen: index === this.openIndex,
-                onToggle: () => {
-                    this.toggle(index);
-                    const newRender = this.render();
-                    container.replaceWith(newRender);
-                }
+                onToggle: () => this.toggle(index)
             });
+            this.items.push(item);
             container.appendChild(item.render());
         });
         return container;
+    }
+    render() {
+        return this.container;
     }
 }
 
 
 /***/ }),
 
-/***/ "./src/components/accordion/AccordionItem.ts":
-/*!***************************************************!*\
-  !*** ./src/components/accordion/AccordionItem.ts ***!
-  \***************************************************/
+/***/ "./src/components/accordion/accordion-item/AccordionItem.ts":
+/*!******************************************************************!*\
+  !*** ./src/components/accordion/accordion-item/AccordionItem.ts ***!
+  \******************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AccordionItem: () => (/* binding */ AccordionItem)
 /* harmony export */ });
-/* harmony import */ var _assets_icons_chevron_right_svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../assets/icons/chevron-right.svg */ "./src/assets/icons/chevron-right.svg");
-/* harmony import */ var _assets_icons_chevron_down_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../assets/icons/chevron-down.svg */ "./src/assets/icons/chevron-down.svg");
+/* harmony import */ var _assets_icons_chevron_right_svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../assets/icons/chevron-right.svg */ "./src/assets/icons/chevron-right.svg");
+/* harmony import */ var _assets_icons_chevron_down_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../assets/icons/chevron-down.svg */ "./src/assets/icons/chevron-down.svg");
 
 
 class AccordionItem {
     constructor(props) {
+        this.isOpen = false;
         this.props = props;
         this.container = this.createItem();
     }
     createItem() {
         const item = document.createElement('div');
-        item.className = 'accordion-item';
+        item.className = 'accordion__item';
         const header = document.createElement('div');
-        header.className = 'accordion-header';
+        header.className = 'accordion__header';
         header.addEventListener('click', () => this.props.onToggle());
-        const icon = document.createElement('img');
-        icon.className = 'accordion-icon';
-        icon.src = this.props.isOpen ? _assets_icons_chevron_down_svg__WEBPACK_IMPORTED_MODULE_1__ : _assets_icons_chevron_right_svg__WEBPACK_IMPORTED_MODULE_0__;
+        this.icon = document.createElement('img');
+        this.icon.className = 'accordion__icon';
+        this.icon.src = _assets_icons_chevron_right_svg__WEBPACK_IMPORTED_MODULE_0__;
         const titleEl = document.createElement('span');
-        titleEl.className = 'accordion-title';
+        titleEl.className = 'accordion__title';
         titleEl.textContent = this.props.title;
-        header.appendChild(icon);
+        header.appendChild(this.icon);
         header.appendChild(titleEl);
         item.appendChild(header);
-        if (this.props.isOpen) {
-            const content = document.createElement('div');
-            content.className = 'accordion-content';
-            content.textContent = this.props.content;
-            item.appendChild(content);
-        }
+        this.content = document.createElement('div');
+        this.content.className = 'accordion__content';
+        const innerContent = document.createElement('div');
+        innerContent.className = 'accordion__content-inner';
+        innerContent.textContent = this.props.content;
+        this.content.appendChild(innerContent);
+        item.appendChild(this.content);
         return item;
+    }
+    open() {
+        this.isOpen = true;
+        this.container.classList.add('accordion__item--open');
+        this.icon.src = _assets_icons_chevron_down_svg__WEBPACK_IMPORTED_MODULE_1__;
+    }
+    close() {
+        this.isOpen = false;
+        this.container.classList.remove('accordion__item--open');
+        this.icon.src = _assets_icons_chevron_right_svg__WEBPACK_IMPORTED_MODULE_0__;
     }
     render() {
         return this.container;
@@ -606,6 +623,38 @@ class RenderImage {
 
 /***/ }),
 
+/***/ "./src/components/section-card/SectionCard.ts":
+/*!****************************************************!*\
+  !*** ./src/components/section-card/SectionCard.ts ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SectionCard: () => (/* binding */ SectionCard)
+/* harmony export */ });
+class SectionCard {
+    constructor(children = []) {
+        this.children = children;
+    }
+    render() {
+        const card = document.createElement('div');
+        card.className = 'section-card';
+        this.children.forEach(child => {
+            if (typeof child === 'string') {
+                card.appendChild(document.createTextNode(child));
+            }
+            else {
+                card.appendChild(child);
+            }
+        });
+        return card;
+    }
+}
+
+
+/***/ }),
+
 /***/ "./src/components/slider-input/SliderInput.ts":
 /*!****************************************************!*\
   !*** ./src/components/slider-input/SliderInput.ts ***!
@@ -784,20 +833,22 @@ class Toast {
 
 /***/ }),
 
-/***/ "./src/pages/AboutPage.ts":
-/*!********************************!*\
-  !*** ./src/pages/AboutPage.ts ***!
-  \********************************/
+/***/ "./src/pages/about/AboutPage.ts":
+/*!**************************************!*\
+  !*** ./src/pages/about/AboutPage.ts ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AboutPage: () => (/* binding */ AboutPage)
 /* harmony export */ });
-/* harmony import */ var _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/main-section/MainSection */ "./src/components/main-section/MainSection.ts");
-/* harmony import */ var _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/column-layout/ColumnLayout */ "./src/components/column-layout/ColumnLayout.ts");
-/* harmony import */ var _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/title/TitlePage */ "./src/components/title/TitlePage.ts");
-/* harmony import */ var _components_description_TextSection__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/description/TextSection */ "./src/components/description/TextSection.ts");
+/* harmony import */ var _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/main-section/MainSection */ "./src/components/main-section/MainSection.ts");
+/* harmony import */ var _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/column-layout/ColumnLayout */ "./src/components/column-layout/ColumnLayout.ts");
+/* harmony import */ var _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/title/TitlePage */ "./src/components/title/TitlePage.ts");
+/* harmony import */ var _components_description_TextSection__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/description/TextSection */ "./src/components/description/TextSection.ts");
+/* harmony import */ var _components_section_card_SectionCard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/section-card/SectionCard */ "./src/components/section-card/SectionCard.ts");
+
 
 
 
@@ -809,9 +860,18 @@ class AboutPage {
             'Os métodos clássicos de criptografia referem-se às técnicas e algoritmos de cifragem desenvolvidos antes da era dos computadores, usados para proteger mensagens ao longo da história. Esses métodos envolvem a transformação do texto simples em um texto cifrado, de maneira que apenas aqueles que conhecem a chave de cifragem possam entender a mensagem original.'
         ];
         const description = new _components_description_TextSection__WEBPACK_IMPORTED_MODULE_3__.TextSection(aboutParagraphs);
+        const textCard = [
+            'Este projeto foi criado com o objetivo de oferecer uma experiência interativa sobre a Cifra de César, uma das técnicas de criptografia mais antigas e conhecidas. O projeto permite que os usuários experimentem o processo de criptografia e descriptografia usando a Cifra de César, explorando como as mensagens podem ser codificadas e decodificadas de forma simples. Com uma interface intuitiva, o projeto é ideal para iniciantes que desejam ter um primeiro contato prático com a criptografia, sem a necessidade de mergulhar em explicações técnicas complexas.'
+        ];
+        const titleCard = new _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__.TitlePage(3, 'Objetivo do projeto:');
+        const descriptionCard = new _components_description_TextSection__WEBPACK_IMPORTED_MODULE_3__.TextSection(textCard);
+        const sectionCard = new _components_section_card_SectionCard__WEBPACK_IMPORTED_MODULE_4__.SectionCard([
+            titleCard.render(),
+            descriptionCard.render()
+        ]);
         const layout = new _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__.ColumnLayout({
             leftContent: [subtitle.render(), description.render()],
-            rightContent: [],
+            rightContent: [sectionCard.render()],
             className: 'first-layout',
             // leftColumnClassName: 'first-layout__column--left',
             // rightColumnClassName: 'first-layout__column--right',
@@ -828,20 +888,26 @@ class AboutPage {
 
 /***/ }),
 
-/***/ "./src/pages/ClassicPage.ts":
-/*!**********************************!*\
-  !*** ./src/pages/ClassicPage.ts ***!
-  \**********************************/
+/***/ "./src/pages/classic/ClassicPage.ts":
+/*!******************************************!*\
+  !*** ./src/pages/classic/ClassicPage.ts ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ClassicPage: () => (/* binding */ ClassicPage)
 /* harmony export */ });
-/* harmony import */ var _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/main-section/MainSection */ "./src/components/main-section/MainSection.ts");
-/* harmony import */ var _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/column-layout/ColumnLayout */ "./src/components/column-layout/ColumnLayout.ts");
-/* harmony import */ var _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/title/TitlePage */ "./src/components/title/TitlePage.ts");
-/* harmony import */ var _components_description_TextSection__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/description/TextSection */ "./src/components/description/TextSection.ts");
+/* harmony import */ var _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/main-section/MainSection */ "./src/components/main-section/MainSection.ts");
+/* harmony import */ var _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/column-layout/ColumnLayout */ "./src/components/column-layout/ColumnLayout.ts");
+/* harmony import */ var _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/title/TitlePage */ "./src/components/title/TitlePage.ts");
+/* harmony import */ var _components_description_TextSection__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/description/TextSection */ "./src/components/description/TextSection.ts");
+/* harmony import */ var _components_section_card_SectionCard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/section-card/SectionCard */ "./src/components/section-card/SectionCard.ts");
+/* harmony import */ var _components_render_image_render_image__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/render-image/render-image */ "./src/components/render-image/render-image.ts");
+/* harmony import */ var _assets_images_cf_png__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../assets/images/cf.png */ "./src/assets/images/cf.png");
+
+
+
 
 
 
@@ -853,9 +919,24 @@ class ClassicPage {
             'Os métodos clássicos de criptografia referem-se às técnicas e algoritmos de cifragem desenvolvidos antes da era dos computadores, usados para proteger mensagens ao longo da história. Esses métodos envolvem a transformação do texto simples em um texto cifrado, de maneira que apenas aqueles que conhecem a chave de cifragem possam entender a mensagem original.'
         ];
         const description = new _components_description_TextSection__WEBPACK_IMPORTED_MODULE_3__.TextSection(classicParagraphs);
+        const textCard = [
+            'Os métodos clássicos de criptografia referem-se às técnicas e algoritmos de cifragem desenvolvidos antes da era dos computadores, usados para proteger mensagens ao longo da história. Esses métodos envolvem a transformação do texto simples em um texto cifrado, de maneira que apenas aqueles que conhecem a chave de cifragem possam entender a mensagem original.'
+        ];
+        const titleCard = new _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__.TitlePage(3, 'Cifra de César:');
+        const descriptionCard = new _components_description_TextSection__WEBPACK_IMPORTED_MODULE_3__.TextSection(textCard);
+        const imageCard = new _components_render_image_render_image__WEBPACK_IMPORTED_MODULE_5__.RenderImage({
+            src: _assets_images_cf_png__WEBPACK_IMPORTED_MODULE_6__,
+            alt: '',
+            className: 'section-card__image'
+        });
+        const sectionCard = new _components_section_card_SectionCard__WEBPACK_IMPORTED_MODULE_4__.SectionCard([
+            titleCard.render(),
+            descriptionCard.render(),
+            imageCard.render()
+        ]);
         const layout = new _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__.ColumnLayout({
             leftContent: [subtitle.render(), description.render()],
-            rightContent: [],
+            rightContent: [sectionCard.render()],
             className: 'first-layout',
             // leftColumnClassName: 'first-layout__column--left',
             // rightColumnClassName: 'first-layout__column--right',
@@ -872,21 +953,21 @@ class ClassicPage {
 
 /***/ }),
 
-/***/ "./src/pages/HistoryPage.ts":
-/*!**********************************!*\
-  !*** ./src/pages/HistoryPage.ts ***!
-  \**********************************/
+/***/ "./src/pages/history/HistoryPage.ts":
+/*!******************************************!*\
+  !*** ./src/pages/history/HistoryPage.ts ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HistoryPage: () => (/* binding */ HistoryPage)
 /* harmony export */ });
-/* harmony import */ var _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/main-section/MainSection */ "./src/components/main-section/MainSection.ts");
-/* harmony import */ var _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/column-layout/ColumnLayout */ "./src/components/column-layout/ColumnLayout.ts");
-/* harmony import */ var _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/title/TitlePage */ "./src/components/title/TitlePage.ts");
-/* harmony import */ var _components_description_TextSection__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/description/TextSection */ "./src/components/description/TextSection.ts");
-/* harmony import */ var _components_accordion_Accordion__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/accordion/Accordion */ "./src/components/accordion/Accordion.ts");
+/* harmony import */ var _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/main-section/MainSection */ "./src/components/main-section/MainSection.ts");
+/* harmony import */ var _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/column-layout/ColumnLayout */ "./src/components/column-layout/ColumnLayout.ts");
+/* harmony import */ var _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/title/TitlePage */ "./src/components/title/TitlePage.ts");
+/* harmony import */ var _components_description_TextSection__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/description/TextSection */ "./src/components/description/TextSection.ts");
+/* harmony import */ var _components_accordion_Accordion__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/accordion/Accordion */ "./src/components/accordion/Accordion.ts");
 
 
 
@@ -902,7 +983,7 @@ class HistoryPage {
         const sections = [
             {
                 title: 'Origens Antigas',
-                content: ''
+                content: 'Durante a Idade Média, a criptografia tornou-se mais sofisticada, especialmente nas cortes reais e no âmbito religioso. O Papa Gregório XIII, por exemplo, usava cifras para proteger suas correspondências. Nesse período, surgiram métodos de substituição mais complexos, como a cifra de Vigenère, que empregava um padrão de letras para criar uma chave mais difícil de decifrar.'
             },
             {
                 title: 'Criptografia Medieval',
@@ -910,11 +991,11 @@ class HistoryPage {
             },
             {
                 title: 'Renascimento e Avanços Científicos',
-                content: ''
+                content: 'Durante a Idade Média, a criptografia tornou-se mais sofisticada, especialmente nas cortes reais e no âmbito religioso. O Papa Gregório XIII, por exemplo, usava cifras para proteger suas correspondências. Nesse período, surgiram métodos de substituição mais complexos, como a cifra de Vigenère, que empregava um padrão de letras para criar uma chave mais difícil de decifrar.'
             },
             {
                 title: 'Criptografia Moderna',
-                content: ''
+                content: 'Durante a Idade Média, a criptografia tornou-se mais sofisticada, especialmente nas cortes reais e no âmbito religioso. O Papa Gregório XIII, por exemplo, usava cifras para proteger suas correspondências. Nesse período, surgiram métodos de substituição mais complexos, como a cifra de Vigenère, que empregava um padrão de letras para criar uma chave mais difícil de decifrar.'
             },
             {
                 title: 'Era Digital',
@@ -927,9 +1008,8 @@ class HistoryPage {
             leftContent: [subtitle.render(), description.render()],
             rightContent: [accordion.render()],
             className: 'first-layout',
-            // leftColumnClassName: 'first-layout__column--left',
-            // rightColumnClassName: 'first-layout__column--right',
-            // children: [imagePage.render()]
+            leftColumnClassName: 'first-layout__column--left',
+            rightColumnClassName: 'first-layout__column--right',
         });
         const section = new _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__.MainSection({
             className: 'bg-light',
@@ -942,30 +1022,30 @@ class HistoryPage {
 
 /***/ }),
 
-/***/ "./src/pages/HomePage.ts":
-/*!*******************************!*\
-  !*** ./src/pages/HomePage.ts ***!
-  \*******************************/
+/***/ "./src/pages/home/HomePage.ts":
+/*!************************************!*\
+  !*** ./src/pages/home/HomePage.ts ***!
+  \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomePage: () => (/* binding */ HomePage)
 /* harmony export */ });
-/* harmony import */ var _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/main-section/MainSection */ "./src/components/main-section/MainSection.ts");
-/* harmony import */ var _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/column-layout/ColumnLayout */ "./src/components/column-layout/ColumnLayout.ts");
-/* harmony import */ var _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/title/TitlePage */ "./src/components/title/TitlePage.ts");
-/* harmony import */ var _components_render_image_render_image__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/render-image/render-image */ "./src/components/render-image/render-image.ts");
-/* harmony import */ var _components_text_input_TextInput__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/text-input/TextInput */ "./src/components/text-input/TextInput.ts");
-/* harmony import */ var _components_slider_input_SliderInput__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/slider-input/SliderInput */ "./src/components/slider-input/SliderInput.ts");
-/* harmony import */ var _components_buttons_toggle_button_toggleButton__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/buttons/toggle-button/toggleButton */ "./src/components/buttons/toggle-button/toggleButton.ts");
-/* harmony import */ var _components_buttons_generate_button_generateButton__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/buttons/generate-button/generateButton */ "./src/components/buttons/generate-button/generateButton.ts");
-/* harmony import */ var _components_buttons_clear_button_ClearButton__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/buttons/clear-button/ClearButton */ "./src/components/buttons/clear-button/ClearButton.ts");
-/* harmony import */ var _components_button_group_buttonGroup__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../components/button-group/buttonGroup */ "./src/components/button-group/buttonGroup.ts");
-/* harmony import */ var _components_modal_modal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../components/modal/modal */ "./src/components/modal/modal.ts");
-/* harmony import */ var _components_toast_Toast__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../components/toast/Toast */ "./src/components/toast/Toast.ts");
-/* harmony import */ var _services_cryptography__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../services/cryptography */ "./src/services/cryptography.ts");
-/* harmony import */ var _assets_images_img_jpg__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../assets/images/img.jpg */ "./src/assets/images/img.jpg");
+/* harmony import */ var _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/main-section/MainSection */ "./src/components/main-section/MainSection.ts");
+/* harmony import */ var _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/column-layout/ColumnLayout */ "./src/components/column-layout/ColumnLayout.ts");
+/* harmony import */ var _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/title/TitlePage */ "./src/components/title/TitlePage.ts");
+/* harmony import */ var _components_render_image_render_image__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/render-image/render-image */ "./src/components/render-image/render-image.ts");
+/* harmony import */ var _components_text_input_TextInput__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/text-input/TextInput */ "./src/components/text-input/TextInput.ts");
+/* harmony import */ var _components_slider_input_SliderInput__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/slider-input/SliderInput */ "./src/components/slider-input/SliderInput.ts");
+/* harmony import */ var _components_buttons_toggle_button_toggleButton__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/buttons/toggle-button/toggleButton */ "./src/components/buttons/toggle-button/toggleButton.ts");
+/* harmony import */ var _components_buttons_generate_button_generateButton__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/buttons/generate-button/generateButton */ "./src/components/buttons/generate-button/generateButton.ts");
+/* harmony import */ var _components_buttons_clear_button_ClearButton__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/buttons/clear-button/ClearButton */ "./src/components/buttons/clear-button/ClearButton.ts");
+/* harmony import */ var _components_button_group_buttonGroup__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/button-group/buttonGroup */ "./src/components/button-group/buttonGroup.ts");
+/* harmony import */ var _components_modal_modal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../components/modal/modal */ "./src/components/modal/modal.ts");
+/* harmony import */ var _components_toast_Toast__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../components/toast/Toast */ "./src/components/toast/Toast.ts");
+/* harmony import */ var _services_cryptography__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../services/cryptography */ "./src/services/cryptography.ts");
+/* harmony import */ var _assets_images_img_jpg__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../assets/images/img.jpg */ "./src/assets/images/img.jpg");
 
 
 
@@ -990,12 +1070,12 @@ class HomePage {
         const image = new _components_render_image_render_image__WEBPACK_IMPORTED_MODULE_3__.RenderImage({
             src: _assets_images_img_jpg__WEBPACK_IMPORTED_MODULE_13__,
             alt: '',
-            className: 'first-layout__image'
+            className: 'home-layout__image'
         });
         const titlePage = new _components_title_TitlePage__WEBPACK_IMPORTED_MODULE_2__.TitlePage(1, "Criptografia Clássica", [image.render()]);
         const textInput = new _components_text_input_TextInput__WEBPACK_IMPORTED_MODULE_4__.TextInput({
             id: 'text-input',
-            placeholder: 'Digite aqui...',
+            placeholder: 'Digite sua mensagem aqui...',
             onChange: (newText) => (this.currentText = newText)
         });
         const sliderInput = new _components_slider_input_SliderInput__WEBPACK_IMPORTED_MODULE_5__.SliderInput({
@@ -1068,9 +1148,9 @@ class HomePage {
                 sliderInput.render(),
                 buttonGroup.render()
             ],
-            className: 'first-layout',
-            leftColumnClassName: 'first-layout__column--left',
-            rightColumnClassName: 'first-layout__column--right',
+            className: 'home-layout',
+            leftColumnClassName: 'home-layout__column--left',
+            rightColumnClassName: 'home-layout__column--right',
             // children: [imagePage.render()]
         });
         const section = new _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__.MainSection({
@@ -1094,10 +1174,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Router: () => (/* binding */ Router)
 /* harmony export */ });
-/* harmony import */ var _pages_HomePage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pages/HomePage */ "./src/pages/HomePage.ts");
-/* harmony import */ var _pages_HistoryPage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pages/HistoryPage */ "./src/pages/HistoryPage.ts");
-/* harmony import */ var _pages_ClassicPage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/ClassicPage */ "./src/pages/ClassicPage.ts");
-/* harmony import */ var _pages_AboutPage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/AboutPage */ "./src/pages/AboutPage.ts");
+/* harmony import */ var _pages_home_HomePage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pages/home/HomePage */ "./src/pages/home/HomePage.ts");
+/* harmony import */ var _pages_history_HistoryPage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pages/history/HistoryPage */ "./src/pages/history/HistoryPage.ts");
+/* harmony import */ var _pages_classic_ClassicPage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/classic/ClassicPage */ "./src/pages/classic/ClassicPage.ts");
+/* harmony import */ var _pages_about_AboutPage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/about/AboutPage */ "./src/pages/about/AboutPage.ts");
 
 
 
@@ -1125,19 +1205,19 @@ class Router {
         let view;
         switch (page) {
             case 'home':
-                view = new _pages_HomePage__WEBPACK_IMPORTED_MODULE_0__.HomePage().render();
+                view = new _pages_home_HomePage__WEBPACK_IMPORTED_MODULE_0__.HomePage().render();
                 break;
             case 'historia':
-                view = new _pages_HistoryPage__WEBPACK_IMPORTED_MODULE_1__.HistoryPage().render();
+                view = new _pages_history_HistoryPage__WEBPACK_IMPORTED_MODULE_1__.HistoryPage().render();
                 break;
             case 'classico':
-                view = new _pages_ClassicPage__WEBPACK_IMPORTED_MODULE_2__.ClassicPage().render();
+                view = new _pages_classic_ClassicPage__WEBPACK_IMPORTED_MODULE_2__.ClassicPage().render();
                 break;
             case 'sobre':
-                view = new _pages_AboutPage__WEBPACK_IMPORTED_MODULE_3__.AboutPage().render();
+                view = new _pages_about_AboutPage__WEBPACK_IMPORTED_MODULE_3__.AboutPage().render();
                 break;
             default:
-                view = new _pages_HomePage__WEBPACK_IMPORTED_MODULE_0__.HomePage().render();
+                view = new _pages_home_HomePage__WEBPACK_IMPORTED_MODULE_0__.HomePage().render();
         }
         this.main.appendChild(view);
         if (pushState) {
@@ -1230,6 +1310,16 @@ module.exports = __webpack_require__.p + "assets/images/close-icon.svg";
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "assets/images/copy-icon.svg";
+
+/***/ }),
+
+/***/ "./src/assets/images/cf.png":
+/*!**********************************!*\
+  !*** ./src/assets/images/cf.png ***!
+  \**********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "assets/images/cf.png";
 
 /***/ }),
 

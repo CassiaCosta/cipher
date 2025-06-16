@@ -1,17 +1,17 @@
-import { MainSection } from '../components/main-section/MainSection';
-import { ColumnLayout } from '../components/column-layout/ColumnLayout';
-import { TitlePage } from '../components/title/TitlePage';
-import { RenderImage } from '../components/render-image/render-image';
-import { TextInput } from '../components/text-input/TextInput';
-import { SliderInput } from '../components/slider-input/SliderInput';
-import { ToggleButton } from '../components/buttons/toggle-button/toggleButton';
-import { GenerateButton } from '../components/buttons/generate-button/generateButton';
-import { ClearButton } from '../components/buttons/clear-button/ClearButton';
-import { ButtonGroup } from '../components/button-group/buttonGroup';
-import { Modal } from '../components/modal/modal';
-import { Toast } from '../components/toast/Toast';
-import { caesarCipher } from '../services/cryptography';
-import imagePagePath from '../assets/images/img.jpg';
+import { MainSection } from '../../components/main-section/MainSection';
+import { ColumnLayout } from '../../components/column-layout/ColumnLayout';
+import { TitlePage } from '../../components/title/TitlePage';
+import { RenderImage } from '../../components/render-image/render-image';
+import { TextInput } from '../../components/text-input/TextInput';
+import { SliderInput } from '../../components/slider-input/SliderInput';
+import { ToggleButton } from '../../components/buttons/toggle-button/toggleButton';
+import { GenerateButton } from '../../components/buttons/generate-button/generateButton';
+import { ClearButton } from '../../components/buttons/clear-button/ClearButton';
+import { ButtonGroup } from '../../components/button-group/buttonGroup';
+import { Modal } from '../../components/modal/modal';
+import { Toast } from '../../components/toast/Toast';
+import { caesarCipher } from '../../services/cryptography';
+import imagePagePath from '../../assets/images/img.jpg';
 
 export class HomePage {
     private currentText = '';
@@ -22,14 +22,14 @@ export class HomePage {
         const image = new RenderImage({
             src: imagePagePath,
             alt: '',
-            className: 'first-layout__image'
+            className: 'home-layout__image'
         });
 
         const titlePage = new TitlePage(1, "Criptografia Clássica", [image.render()]);
 
         const textInput = new TextInput({
             id: 'text-input',
-            placeholder: 'Digite aqui...',
+            placeholder: 'Digite sua mensagem aqui...',
             onChange: (newText) => (this.currentText = newText)
         });
 
@@ -112,9 +112,9 @@ export class HomePage {
                 sliderInput.render(),
                 buttonGroup.render()
             ],
-            className: 'first-layout',
-            leftColumnClassName: 'first-layout__column--left',
-            rightColumnClassName: 'first-layout__column--right',
+            className: 'home-layout',
+            leftColumnClassName: 'home-layout__column--left',
+            rightColumnClassName: 'home-layout__column--right',
             // children: [imagePage.render()]
         });
 
