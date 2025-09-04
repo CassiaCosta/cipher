@@ -31,17 +31,22 @@ class Accordion {
         this.items = [];
         this.openIndex = null;
         this.toggle = (index) => {
-            if (this.openIndex !== null && this.openIndex !== index) {
-                this.items[this.openIndex].close();
-            }
-            if (this.openIndex === index) {
-                this.items[index].close();
+            const currentlyOpen = this.openIndex;
+            const item = this.items[index];
+            if (currentlyOpen === index) {
+                item.close();
                 this.openIndex = null;
+                return;
             }
-            else {
-                this.items[index].open();
-                this.openIndex = index;
+            if (currentlyOpen !== null) {
+                this.items[currentlyOpen].close();
             }
+            item.open();
+            this.openIndex = index;
+            item.render().scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
         };
         this.sections = sections;
         this.container = this.createAccordion();
@@ -53,7 +58,7 @@ class Accordion {
             const item = new _accordion_item_AccordionItem__WEBPACK_IMPORTED_MODULE_0__.AccordionItem({
                 title: section.title,
                 content: section.content,
-                onToggle: () => this.toggle(index)
+                onToggle: () => this.toggle(index),
             });
             this.items.push(item);
             container.appendChild(item.render());
@@ -78,10 +83,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AccordionItem: () => (/* binding */ AccordionItem)
 /* harmony export */ });
-/* harmony import */ var _assets_icons_chevron_right_svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../assets/icons/chevron-right.svg */ "./src/assets/icons/chevron-right.svg");
-/* harmony import */ var _assets_icons_chevron_down_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../assets/icons/chevron-down.svg */ "./src/assets/icons/chevron-down.svg");
-
-
 class AccordionItem {
     constructor(props) {
         this.isOpen = false;
@@ -94,13 +95,22 @@ class AccordionItem {
         const header = document.createElement('div');
         header.className = 'accordion__header';
         header.addEventListener('click', () => this.props.onToggle());
-        this.icon = document.createElement('img');
-        this.icon.className = 'accordion__icon';
-        this.icon.src = _assets_icons_chevron_right_svg__WEBPACK_IMPORTED_MODULE_0__;
+        this.iconWrapper = document.createElement('span');
+        this.iconWrapper.className = 'accordion__icon';
+        this.iconWrapper.innerHTML = `
+            <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.25 22.5L18.75 15L11.25 7.5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
+            </svg>
+        `;
         const titleEl = document.createElement('span');
         titleEl.className = 'accordion__title';
         titleEl.textContent = this.props.title;
-        header.appendChild(this.icon);
+        header.appendChild(this.iconWrapper);
         header.appendChild(titleEl);
         item.appendChild(header);
         this.content = document.createElement('div');
@@ -113,14 +123,16 @@ class AccordionItem {
         return item;
     }
     open() {
+        if (this.isOpen)
+            return;
         this.isOpen = true;
         this.container.classList.add('accordion__item--open');
-        this.icon.src = _assets_icons_chevron_down_svg__WEBPACK_IMPORTED_MODULE_1__;
     }
     close() {
+        if (!this.isOpen)
+            return;
         this.isOpen = false;
         this.container.classList.remove('accordion__item--open');
-        this.icon.src = _assets_icons_chevron_right_svg__WEBPACK_IMPORTED_MODULE_0__;
     }
     render() {
         return this.container;
@@ -1007,9 +1019,9 @@ class HistoryPage {
         const layout = new _components_column_layout_ColumnLayout__WEBPACK_IMPORTED_MODULE_1__.ColumnLayout({
             leftContent: [subtitle.render(), description.render()],
             rightContent: [accordion.render()],
-            className: 'first-layout',
-            leftColumnClassName: 'first-layout__column--left',
-            rightColumnClassName: 'first-layout__column--right',
+            className: 'history-layout',
+            leftColumnClassName: 'history-layout__column--left',
+            rightColumnClassName: 'history-layout__column--right',
         });
         const section = new _components_main_section_MainSection__WEBPACK_IMPORTED_MODULE_0__.MainSection({
             className: 'bg-light',
@@ -1263,26 +1275,6 @@ module.exports = __webpack_require__.p + "assets/images/check-small-icon.svg";
 
 /***/ }),
 
-/***/ "./src/assets/icons/chevron-down.svg":
-/*!*******************************************!*\
-  !*** ./src/assets/icons/chevron-down.svg ***!
-  \*******************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "assets/images/chevron-down.svg";
-
-/***/ }),
-
-/***/ "./src/assets/icons/chevron-right.svg":
-/*!********************************************!*\
-  !*** ./src/assets/icons/chevron-right.svg ***!
-  \********************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "assets/images/chevron-right.svg";
-
-/***/ }),
-
 /***/ "./src/assets/icons/clear-icon.svg":
 /*!*****************************************!*\
   !*** ./src/assets/icons/clear-icon.svg ***!
@@ -1464,12 +1456,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     const initialPage = (window.location.hash.replace('#', '') || 'home');
     router.navigate(initialPage);
-    // function getScreenSize() {
-    //     const width = window.innerWidth;
-    //     const height = window.innerHeight;
-    //     console.log(`Largura da tela: ${width}px, Altura da tela ${height}px`);
-    // }
-    // const screenSize = getScreenSize();
+    function getScreenSize() {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        console.log(`Largura da tela: ${width}px, Altura da tela ${height}px`);
+    }
+    const screenSize = getScreenSize();
 });
 
 /******/ })()
