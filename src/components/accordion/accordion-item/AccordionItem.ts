@@ -1,6 +1,3 @@
-import chevronRight from '../../../assets/icons/chevron-right.svg';
-import chevronDown from '../../../assets/icons/chevron-down.svg';
-
 interface AccordionItemProps {
     title: string;
     content: string;
@@ -11,8 +8,8 @@ export class AccordionItem {
     private props: AccordionItemProps;
     private container: HTMLElement;
     private content!: HTMLElement;
-    private icon!: HTMLImageElement;
-    private isOpen: boolean = false;
+    private iconWrapper!: HTMLElement;
+    public isOpen: boolean = false;
 
     constructor(props: AccordionItemProps) {
         this.props = props;
@@ -27,15 +24,24 @@ export class AccordionItem {
         header.className = 'accordion__header';
         header.addEventListener('click', () => this.props.onToggle());
 
-        this.icon = document.createElement('img');
-        this.icon.className = 'accordion__icon';
-        this.icon.src = chevronRight;
+        this.iconWrapper = document.createElement('span');
+        this.iconWrapper.className = 'accordion__icon';
+        this.iconWrapper.innerHTML = `
+            <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.25 22.5L18.75 15L11.25 7.5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
+            </svg>
+        `;
 
         const titleEl = document.createElement('span');
         titleEl.className = 'accordion__title';
         titleEl.textContent = this.props.title;
 
-        header.appendChild(this.icon);
+        header.appendChild(this.iconWrapper);
         header.appendChild(titleEl);
         item.appendChild(header);
 
@@ -53,15 +59,15 @@ export class AccordionItem {
     }
 
     open(): void {
+        if (this.isOpen) return;
         this.isOpen = true;
         this.container.classList.add('accordion__item--open');
-        this.icon.src = chevronDown;
     }
 
     close(): void {
+        if (!this.isOpen) return;
         this.isOpen = false;
         this.container.classList.remove('accordion__item--open');
-        this.icon.src = chevronRight;
     }
 
     render(): HTMLElement {

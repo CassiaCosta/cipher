@@ -38,12 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialPage = (window.location.hash.replace('#', '') || 'home') as PageKey;
     router.navigate(initialPage);
 
-    // function getScreenSize() {
-    //     const width = window.innerWidth;
-    //     const height = window.innerHeight;
+    function getScreenSize() {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        
+        console.log(`Largura da tela: ${width}px, Altura da tela ${height}px`);
+    }
 
-    //     console.log(`Largura da tela: ${width}px, Altura da tela ${height}px`);
-    // }
-
-    // const screenSize = getScreenSize();
+    const screenSize = getScreenSize();
 });

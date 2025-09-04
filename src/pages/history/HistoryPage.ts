@@ -42,9 +42,9 @@ export class HistoryPage {
         const layout = new ColumnLayout({
             leftContent: [subtitle.render(), description.render()],
             rightContent: [accordion.render()],
-            className: 'first-layout',
-            leftColumnClassName: 'first-layout__column--left',
-            rightColumnClassName: 'first-layout__column--right',
+            className: 'history-layout',
+            leftColumnClassName: 'history-layout__column--left',
+            rightColumnClassName: 'history-layout__column--right',
         });
 
         const section = new MainSection({

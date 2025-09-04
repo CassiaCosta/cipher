@@ -16,7 +16,7 @@ export class Accordion {
         this.container = this.createAccordion();
     }
     
-    createAccordion(): HTMLElement {
+    private createAccordion(): HTMLElement {
         const container = document.createElement('div');
         container.className = 'accordion';
 
@@ -24,7 +24,7 @@ export class Accordion {
             const item = new AccordionItem({
                 title: section.title,
                 content: section.content,
-                onToggle: () => this.toggle(index)
+                onToggle: () => this.toggle(index),
             });
 
             this.items.push(item);
@@ -35,18 +35,27 @@ export class Accordion {
     }
 
     private toggle = (index: number): void => {
-        if (this.openIndex !== null && this.openIndex !== index) {
-            this.items[this.openIndex].close();
+        const currentlyOpen = this.openIndex;
+        const item = this.items[index];
+
+        if (currentlyOpen === index) {
+            item.close();
+            this.openIndex = null;
+            return;
         }
         
-        if (this.openIndex === index) {
-            this.items[index].close();
-            this.openIndex = null;
-        } else {
-            this.items[index].open();
-            this.openIndex = index;
+        if (currentlyOpen !== null) {
+            this.items[currentlyOpen].close();
         }
-    }
+
+        item.open();
+        this.openIndex = index;
+
+        item.render().scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    };
 
     render(): HTMLElement {
         return this.container;

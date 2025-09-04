@@ -16,6 +16,7 @@
 @import '../components/toast/_toast';
 @import '../components/accordion/_accordion';
 @import '../pages/home/_home-page';
+@import '../pages/history/_history-page';
 
 *,
 *::before,
@@ -39,7 +40,7 @@ html {
 }
 
 .layout {
-    padding: 4.375rem 0 1.875rem 0;
+    // padding-top: 50px;
 
     @media (min-width: 1024px) {
         height: 100vh;
